@@ -179,6 +179,23 @@ button.btn.ghost{background:transparent;color:var(--navy)}
 .ck.ask .ck-q{color:var(--warn);font-weight:600}
 @media (max-width:480px){.ck{grid-template-columns:1fr}}
 .sumtbl td .chip{margin:1px}
+/* floating criteria bar */
+.critbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:8;width:max-content;max-width:min(1000px,calc(100% - 32px));background:var(--navy);color:var(--surface);border-radius:12px;box-shadow:0 6px 24px rgba(10,14,40,.28);padding:8px 14px;font-size:13px;cursor:default}
+.critbar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.cb-sum{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.cb-sum .ttl{font-weight:700;opacity:.85}
+.cb-sum .it b{font-family:var(--font-num);margin-left:3px;color:var(--gold)}
+.cb-sum .grp{opacity:.75;font-size:12px}
+.cb-sum .hint{opacity:.6;font-size:11px;margin-left:auto}
+.cb-detail{display:none;margin-top:8px;max-height:55vh;overflow:auto;border-top:1px solid color-mix(in srgb,var(--surface) 25%,transparent);padding-top:8px}
+.critbar:hover .cb-detail,.critbar:focus-within .cb-detail,.critbar.open .cb-detail{display:block}
+.cb-detail table{font-size:13px;color:inherit}
+.cb-detail th,.cb-detail td{border-bottom-color:color-mix(in srgb,var(--surface) 18%,transparent);color:inherit;padding:5px 8px}
+.cb-detail th{opacity:.7}
+.cb-detail td.p{font-family:var(--font-num);font-weight:700;color:var(--gold);white-space:nowrap}
+.cb-detail h5{margin:8px 0 2px;font-size:12px;opacity:.8}
+body.has-cb main{padding-bottom:110px}
+@media (max-width:600px){.cb-sum .hint{display:none}}
 details.fold>summary{cursor:pointer;list-style:none}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary::before{content:"▸";display:inline-block;width:16px;color:var(--navy)}
@@ -206,6 +223,7 @@ details.fold[open]>summary::before{content:"▾"}
 </header>
 
 <main class="wrap" id="app"></main>
+<div class="critbar" id="critbar" tabindex="0" role="note" aria-label="심사기준 요약, 마우스를 올리면 펼쳐짐" hidden></div>
 <div class="lightbox" id="lb" hidden><img id="lbimg" alt=""></div>
 
 <script>
@@ -723,6 +741,31 @@ function viewWrapup(){
   <p class="notes">메모 저장 방식: ${memo.mode==="db"?"이 페이지의 저장소에 자동 저장되어 Claude가 나중에 읽고 피드백 정리에 쓸 수 있습니다.":"이 브라우저에만 저장됩니다."}</p></section>`;
 }
 
+/* ---------- floating criteria bar ---------- */
+const SHORT={"사회보장 데이터 활용":"데이터 활용","발전(사업화) 가능성":"사업화 가능성"};
+function critBarHtml(k){
+  const t=T[k];if(!t)return "";
+  const c=C[t.contest];
+  const hint=`<span class="hint">마우스를 올리면 펼쳐짐</span>`;
+  if(t.contest==="A"){
+    const sum=c.crit.map(r=>`<span class="it">${esc(SHORT[r[0]]||r[0])}<b>${r[1]}</b></span>`).join("");
+    const det=`<table><thead><tr><th>항목</th><th>배점</th><th>보는 것</th></tr></thead><tbody>${c.crit.map(r=>`<tr><td>${esc(r[0])}</td><td class="p">${r[1]}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table>`;
+    return `<div class="cb-sum"><span class="ttl">${esc(c.short)} 100점</span>${sum}${hint}</div><div class="cb-detail">${det}</div>`;
+  }
+  if(t.contest==="B"){
+    const nm=rows=>rows.map(r=>`<span class="it">${esc(r[0])}</span>`).join("");
+    const tb=(title,rows)=>`<h5>${esc(title)}</h5><table><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table>`;
+    return `<div class="cb-sum"><span class="ttl">${esc(c.short)}</span><span class="it">정량<b>50%</b></span><span class="grp">${c.quant.map(r=>esc(r[0])).join("·")}</span><span class="it">정성<b>50%</b></span><span class="grp">응답 ${c.qualR.map(r=>esc(r[0])).join("·")} / 설계서 ${c.qualD.map(r=>esc(r[0])).join("·")}</span>${hint}</div>
+     <div class="cb-detail">${tb("정량 50% · LLM Judge가 응답 채점",c.quant)}${tb("정성 50% · 모델 응답 결과",c.qualR)}${tb("정성 · 프롬프트 설계서",c.qualD)}<p style="margin:6px 0 0;opacity:.7;font-size:12px">항목별 배점은 공개되지 않음. 가점: 질문셋 오류 지적 인정 시 건당 1점</p></div>`;
+  }
+  return "";
+}
+function updateCritBar(){
+  const el=document.getElementById("critbar");const h=critBarHtml(cur());
+  el.innerHTML=h;el.hidden=!h;el.classList.remove("open");document.body.classList.toggle("has-cb",!!h);
+}
+document.getElementById("critbar").addEventListener("click",e=>{if(!e.target.closest(".cb-detail"))e.currentTarget.classList.toggle("open")});
+
 /* ---------- router ---------- */
 const VIEWS=["today","contests","glossary","wrapup",...ORDER];
 function cur(){const h=(location.hash||"").slice(1);return VIEWS.includes(h)?h:"today"}
@@ -734,6 +777,7 @@ function render(){
   if(keepFocus&&c===last)return; /* 입력 중에는 본문을 다시 그리지 않음 */
   const app=document.getElementById("app");
   app.innerHTML=c==="today"?viewToday():c==="contests"?viewContests():c==="glossary"?viewGlossary():c==="wrapup"?viewWrapup():viewTeam(c);
+  if(c!==last)updateCritBar();
   if(c!==last){window.scrollTo(0,0);const on=document.querySelector("nav.tabs a.on");if(on)on.scrollIntoView({block:"nearest",inline:"center"})}
   last=c;
 }
