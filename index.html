@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>부산외대 고급 최종발표</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: 상단 고정 탭바(발표 순서) + 조별 화면은 왼쪽 포스터 / 오른쪽 요약·개념·질문·메모 2단, 좁으면 1단 */
+:root{
+  --bg:#f5f6fa; --surface:#ffffff; --sunk:#eceef5; --fg:#151a2e; --muted:#5a6079; --line:#d9dcea;
+  --navy:#1d2a6b; --navy-soft:#e3e7f7; --gold:#e8b100; --gold-soft:#fff3c4; --gold-fg:#6b5000;
+  --good:#16784a; --good-soft:#dcf2e6; --warn:#a2560a; --warn-soft:#fbe9d4; --bad:#c22a2a; --bad-soft:#fbe0e0;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-num:"Space Grotesk","IBM Plex Sans KR",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1220; --surface:#171b2e; --sunk:#1f2440; --fg:#e8eaf4; --muted:#9aa1bd; --line:#2c3252;
+  --navy:#9fb0ff; --navy-soft:#252d57; --gold:#f2c534; --gold-soft:#3b3214; --gold-fg:#f6d877;
+  --good:#5fd39a; --good-soft:#163527; --warn:#f0a35a; --warn-soft:#3a2614; --bad:#ff7a7a; --bad-soft:#401a1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1220; --surface:#171b2e; --sunk:#1f2440; --fg:#e8eaf4; --muted:#9aa1bd; --line:#2c3252;
+  --navy:#9fb0ff; --navy-soft:#252d57; --gold:#f2c534; --gold-soft:#3b3214; --gold-fg:#f6d877;
+  --good:#5fd39a; --good-soft:#163527; --warn:#f0a35a; --warn-soft:#3a2614; --bad:#ff7a7a; --bad-soft:#401a1d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-block:12px 6px}
+.brand h1{font-size:18px;margin:0;letter-spacing:-.01em}
+.brand .meta{color:var(--muted);font-size:13px}
+.brand .now{margin-left:auto;font-family:var(--font-num);font-size:13px;color:var(--gold-fg);background:var(--gold-soft);padding:2px 10px;border-radius:99px}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;padding-block:4px 10px;scrollbar-width:thin}
+nav.tabs a{flex:none;text-decoration:none;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid transparent;white-space:nowrap}
+nav.tabs a:hover{background:var(--sunk);color:var(--fg)}
+nav.tabs a.on{background:var(--navy);color:var(--surface);font-weight:600}
+nav.tabs a .ord{font-family:var(--font-num);font-size:11px;opacity:.7;margin-right:4px}
+nav.tabs .sep{flex:none;width:1px;background:var(--line);margin:4px 4px}
+nav.tabs a.live{border-color:var(--gold)}
+main{padding-block:20px 60px}
+section.view{display:grid;gap:20px}
+h2{font-size:22px;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h3{font-size:16px;margin:0 0 10px;color:var(--navy)}
+.lead{color:var(--muted);margin:4px 0 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+.chip{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--navy-soft);color:var(--navy);font-weight:600;white-space:nowrap}
+.chip.gold{background:var(--gold-soft);color:var(--gold-fg)}
+.chip.good{background:var(--good-soft);color:var(--good)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.tw{overflow-x:auto}
+.num{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+ul.plain{margin:0;padding-left:18px}
+ul.plain li{margin:3px 0}
+/* timeline */
+.tl{display:grid;gap:6px}
+.tl-row{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);text-decoration:none;color:inherit}
+.tl-row.break{background:transparent;border-style:dashed;color:var(--muted)}
+.tl-row.live{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-soft)}
+.tl-row.done{opacity:.55}
+.tl-row .t{font-family:var(--font-num);font-size:13px;color:var(--muted)}
+.tl-row .who{font-weight:600}
+.tl-row .topic{font-size:13px;color:var(--muted)}
+@media (max-width:600px){.tl-row{grid-template-columns:1fr}.tl-row .t{order:-1}}
+/* team */
+.team-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.team-head .slot{font-family:var(--font-num);color:var(--muted);font-size:14px}
+.team-layout{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:960px){.team-layout{grid-template-columns:1fr}}
+.poster{position:sticky;top:112px}
+@media (max-width:960px){.poster{position:static}}
+.poster img{display:block;width:100%;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:zoom-in}
+.poster .cap{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.poster .cap a{color:var(--navy)}
+.stack{display:grid;gap:16px;min-width:0}
+.kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:8px}
+.stat{background:var(--sunk);border-radius:8px;padding:8px 12px;min-width:120px;flex:1 1 140px}
+.stat b{display:block;font-family:var(--font-num);font-size:20px;color:var(--navy);line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.concepts{display:grid;gap:8px}
+.concept{border-left:3px solid var(--gold);padding:4px 0 4px 12px}
+.concept b{display:block}
+.concept p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.concept .here{font-size:13px;color:var(--fg);margin-top:4px}
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:600px){.fit{grid-template-columns:1fr}}
+.fit div{border-radius:8px;padding:10px 12px;font-size:14px}
+.fit .s{background:var(--good-soft)} .fit .w{background:var(--warn-soft)}
+.fit h4{margin:0 0 4px;font-size:13px}
+.fit .s h4{color:var(--good)} .fit .w h4{color:var(--warn)}
+details.q{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
+details.q+details.q{margin-top:8px}
+details.q summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:8px}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary .qn{font-family:var(--font-num);color:var(--gold-fg);flex:none}
+details.q .why{font-size:12px;color:var(--muted);margin:6px 0 0}
+details.q .ans{margin:8px 0 0;font-size:14px;background:var(--sunk);border-radius:6px;padding:8px 10px}
+details.q .ans b{color:var(--good)}
+.notes{font-size:14px;color:var(--muted)}
+.notes li{margin:3px 0}
+/* memo */
+.memo textarea{width:100%;min-height:180px;resize:vertical;font:inherit;font-size:15px;line-height:1.6;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+.memo textarea:focus{outline:2px solid var(--navy);outline-offset:1px}
+.memo .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.memo .st{font-size:12px;color:var(--muted)}
+.memo .quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.memo .quick button{font:inherit;font-size:12px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.memo .quick button:hover{border-color:var(--navy)}
+button.btn{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--navy);background:var(--navy);color:var(--surface);cursor:pointer}
+button.btn.ghost{background:transparent;color:var(--navy)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.crit td:nth-child(2){font-family:var(--font-num);font-weight:700;color:var(--navy);width:56px}
+.bar-w{height:6px;border-radius:3px;background:var(--navy);opacity:.75}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.gl .panel h4{margin:0 0 4px;font-size:15px}
+.gl .panel p{margin:0;font-size:14px;color:var(--muted)}
+.gl .panel .teams{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.allmemo .item{border-top:1px solid var(--line);padding:10px 0}
+.allmemo .item h4{margin:0 0 4px;font-size:14px}
+.allmemo pre{white-space:pre-wrap;margin:0;font:inherit;font-size:14px}
+.lightbox{position:fixed;inset:0;z-index:20;background:rgba(10,12,24,.85);overflow:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+.lightbox img{display:block;max-width:none;width:min(1400px,100%);margin:0 auto;cursor:zoom-out;background:#fff}
+@media (prefers-reduced-motion:no-preference){nav.tabs a{transition:background .15s}}
+/* timer */
+.brand{align-items:center}
+.brand .now{margin-left:0}
+.timer{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto;flex:0 1 auto}
+@media (max-width:760px){.timer{margin-left:0;width:100%}}
+.alerts{display:flex;flex-wrap:wrap;gap:6px}
+.alert{font-size:13px;padding:4px 10px;border-radius:8px;background:var(--warn-soft);color:var(--fg)}
+.alert b{color:var(--warn)}
+.matrix td,.matrix th{text-align:center;white-space:nowrap}
+.matrix td:first-child,.matrix th:first-child{text-align:left}
+.mk{font-family:var(--font-num);font-weight:700}
+.mk.y{color:var(--good)} .mk.p{color:var(--warn)} .mk.n{color:var(--muted);font-weight:400}
+.timer .lbl{font-size:12px;color:var(--muted);margin-right:2px}
+.timer .preset{font:inherit;font-size:12px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.timer .preset.on{border-color:var(--navy);background:var(--navy-soft);color:var(--navy);font-weight:600}
+.timer .clock{font-family:var(--font-num);font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;min-width:84px;text-align:center;padding:0 10px;border-radius:8px;background:var(--sunk);color:var(--fg);line-height:34px}
+.timer .clock.warn{background:var(--warn-soft);color:var(--warn)}
+.timer .clock.over{background:var(--bad-soft);color:var(--bad)}
+.timer .ctl{font:inherit;font-size:13px;padding:5px 12px;border-radius:8px;border:1px solid var(--navy);background:var(--navy);color:var(--surface);cursor:pointer;min-width:64px}
+.timer .ctl.ghost{background:transparent;color:var(--navy)}
+.timer .who{font-size:12px;color:var(--muted)}
+.timer .prog{flex:1 1 120px;min-width:80px;height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.timer .prog i{display:block;height:100%;width:0;background:var(--navy)}
+.timer .prog i.warn{background:var(--warn)} .timer .prog i.over{background:var(--bad)}
+/* checklist */
+.ck-g+.ck-g{margin-top:12px}
+.ck-h{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:14px}
+.ck{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:8px 10px;border-radius:8px;border:1px solid var(--line);font-size:14px}
+.ck+.ck{margin-top:6px}
+.ck.ok{background:var(--good-soft);border-color:transparent}
+.ck.ask{background:var(--warn-soft);border-color:transparent}
+.ck-btns{display:flex;gap:4px}
+.ckb{font:inherit;font-size:12px;padding:3px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap}
+.ckb.ok.on{background:var(--good);border-color:var(--good);color:var(--surface)}
+.ckb.ask.on{background:var(--warn);border-color:var(--warn);color:var(--surface)}
+.ck-q{font-size:13px;color:var(--muted);margin-top:2px}
+.ck.ok .ck-q{display:none}
+.ck-a{display:none;margin-top:6px;font-size:13px;background:var(--surface);border-radius:6px;padding:6px 8px;color:var(--fg)}
+.ck-a b{color:var(--good)}
+.ck.ask .ck-a{display:block}
+.ck.ask .ck-q{color:var(--warn);font-weight:600}
+@media (max-width:480px){.ck{grid-template-columns:1fr}}
+.sumtbl td .chip{margin:1px}
+details.fold>summary{cursor:pointer;list-style:none}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"▸";display:inline-block;width:16px;color:var(--navy)}
+details.fold[open]>summary::before{content:"▾"}
+.concept.deep{border-left-color:var(--navy)}
+.concept .here .chip{margin-right:4px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>부산외대 고급과정 최종발표</h1>
+      <span class="now num" id="nowpill" title="현재 시각">--:--</span>
+    <div class="timer" role="group" aria-label="발표 타이머 15분">
+      <span class="lbl">발표 15분</span>
+      <span class="clock" id="clk" aria-live="off">15:00</span>
+      <button type="button" class="ctl" id="tStart">시작</button>
+      <button type="button" class="ctl ghost" id="tReset">리셋</button>
+      <span class="prog" aria-hidden="true"><i id="tbar"></i></span>
+      <span class="who" id="twho"></span>
+    </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="화면 이동"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+<div class="lightbox" id="lb" hidden><img id="lbimg" alt=""></div>
+
+<script>
+const T = {
+ t8:{ord:1,team:"8조",name:"훈민청음",start:"13:15",end:"13:35",members:"오지영(팀장) · 전문기 · 데이브(맥슈웰 데이브)",contest:"A",img:"img/t8.jpg",
+  topic:"디지털 취약계층을 위한 맞춤형 음성 AI 에이전트",
+  what:"고령자·장애인·다문화가정이 말로 요청하면, AI가 복지로 같은 공공 사이트를 대신 열어 주소 입력·오류 수정까지 하고, 사용자가 확인한 뒤에만 제출한다. 포스터 시연은 장애인연금 모의 신청 7단계.",
+  how:"총괄 에이전트가 요청을 나눠 복지·행정·생활문화 전문 에이전트에 배분 → 공공 API·RAG로 근거 검색 → Playwright로 웹 화면을 읽고(DOM 분석) 직접 클릭·입력 → 결과 검증, 중요한 작업은 사용자 승인. 음성은 STT/TTS, 개인정보는 가림·암호화.",
+  stats:[["88%","과업 성공률"],["93%","음성 의도 이해"],["92%","복지·행정 정보 정확도"],["85%","오류 복구율"],["1.6초","평균 음성 응답"],["0건","무승인 제출"]],
+  statNote:"모두 Sandbox(시험 환경)에서 측정. 몇 건으로 쟀는지는 포스터에 없음.",
+  concepts:["agent","multi","tool","playwright","sttts","rag","hitl"],
+  strong:"AI 혁신성(멀티 에이전트·음성·웹 조작)과 구체성(단계별 시나리오, 6개 지표)이 강함. 사람 승인 없이 제출되지 않는 구조라 현장 적용 설명이 쉬움.",
+  weak:"사회보장 데이터 활용(25점)이 포스터에서 약하게 보임. 공공데이터 6종을 표로 적었지만 실제 데이터로 무엇을 계산·추천하는지 안 보임. 기존 복지로 챗봇·음성 안내와의 차이도 짚어야 함.",
+  qs:[
+   ["Sandbox 88%·92% 같은 수치는 과업 몇 개로, 무엇을 성공으로 보고 쟀나요?","수치가 신뢰를 얻으려면 표본과 성공 기준이 필요","시나리오 N개 × 반복 횟수, 성공 기준(예: 제출 직전 화면까지 값이 모두 맞게 입력됨)을 말하고, 실패한 12% 중 대표 유형 하나를 예로 든다."],
+   ["실제 복지로 사이트를 조작하나요, 모의 페이지인가요? 로그인·본인인증은 누가 하나요?","실서비스 조작은 보안·약관 이슈가 생김","시연은 모의(샌드박스) 페이지, 본인인증·최종 제출은 사용자가 직접 한다(5단계 본인 인증, 6단계 확인 후 제출). 실서비스는 기관 협력 후 적용한다고 선을 긋는다."],
+   ["심사 1순위가 '사회보장 데이터 활용(25점)'인데, 어떤 데이터를 어디에 쓰나요?","공모전 배점 최대 항목","중앙·지자체 복지 API로 지역·가구 조건에 맞는 사업을 실시간 조회하고, 민간복지·기관 정보는 정제해 대상·기간을 확인한다는 식으로 데이터 이름과 쓰임을 짝지어 말한다."],
+   ["복지로에도 챗봇과 안내가 있는데, 훈민청음이 다른 점은?","독창성 15점","안내에서 끝나지 않고 입력·오류 수정·제출 직전까지 대신 해 주고, 고령자·장애인·다문화 프로필별로 글자 크기·속도·언어를 바꾼다는 점."],
+   ["화면에 주민번호 같은 개인정보가 보이면 모델에 그대로 넘어가나요?","개인정보 처리는 공공 심사에서 반드시 나옴","캡처 단계에서 개인정보 영역을 가리고, 저장 정보는 암호화(AES-GCM), 실행 전 정책 검사(PolicyGuard)를 둔다."]
+  ],
+  notes:["첫 발표 팀이라 오늘 발표 시간 관리의 기준이 됨","전문기 학생은 이전 '데이터 안심구역' 공모전 본선 진출(피크와 탄소 팀)"]},
+ t3:{ord:2,team:"3조",name:"지호와 사고뭉치들",start:"13:35",end:"13:55",members:"최지호(팀장) · 박영규 · 정가은 · 김유나",contest:"A",img:"img/t3.jpg",
+  topic:"신청할 수 있는 복지를 골라 주는 LangGraph 생성–검증 복지서비스 추천 에이전트",
+  what:"로그인하면 연령·지역·소득을 불러와 '지금 신청할 수 있는' 복지를 홈 배너에 최대 5개, 검색 시 최대 40개 추천하고 서비스마다 추천 이유·일치율·D-day를 보여 주는 웹 서비스.",
+  how:"① 마감·직업 제외 서비스를 먼저 빼고 ② 프로필 일치 점수(관심 분야 50 + 직업 20 + 연령 12 + 지역 5 + 소득 5 = 100점)로 80점 이상만 후보 → ③ LangGraph로 생성 모델(gpt-4o-mini)이 추천 이유를 쓰고 검증 모델(gpt-4o)이 채점, 85점 미만이면 다시 생성.",
+  stats:[["5 / 40개","오늘의 추천 / 나만의 추천"],["80점","후보 컷"],["85점","검증 통과선"],["30초 내","채택 조합 응답"],["170~283초","gpt-5 조합 응답"]],
+  statNote:"추천이 맞았는지(정확도)를 잰 수치는 포스터에 없음. 모델 조합 비교는 속도 기준.",
+  concepts:["genverify","langgraph","rulescore","judge","api"],
+  strong:"사회보장 데이터(복지로·공공데이터포털·청년정책 API)를 직접 씀. 점수식과 생성–검증 흐름이 구체적이고 ESG 효과도 포스터에 적음.",
+  weak:"독창성: 복지로 '맞춤형 복지' 추천과 무엇이 다른지. AI 혁신성: 후보를 고르는 핵심은 점수식이고 AI는 이유 문장을 쓰는 역할이라 'AI가 한 일'을 분명히 말해야 함.",
+  qs:[
+   ["일치 점수에서 관심 분야가 50점, 소득이 5점인 근거는?","가중치는 심사위원이 반드시 묻는 설계 선택","여러 가중치를 바꿔 본 실험 결과나, 복지 자격 요건에서 실제로 걸러지는 비율을 근거로 든다. 근거가 없으면 '초기값이고 사용자 반응으로 조정할 계획'이라고 솔직히 말하는 편이 낫다."],
+   ["검증 모델이 매기는 85점은 무엇을 채점한 점수인가요?","LLM이 LLM을 채점할 때 기준이 핵심","자격 조건 충족 여부, 추천 이유가 공고 원문과 맞는지, 마감일 정확성 같은 채점표(루브릭)를 말한다."],
+   ["자격이 안 되는데 추천된 경우가 몇 %였나요?","속도 말고 정확도 지표가 없음","샘플 프로필 N명으로 수작업 확인한 오추천 비율을 말한다. 없다면 다음 단계 계획으로 제시."],
+   ["복지로 '맞춤형 복지 서비스'와 무엇이 다른가요?","독창성 15점","방문할 때마다 조건 재입력이 필요 없음(로그인 연동), 마감 자동 제외·D-day, 서비스별 추천 이유 제공."],
+   ["데모에서 프로필을 바꾸면 추천이 달라지는 걸 바로 보여 줄 수 있나요?","데모 필수 조건 확인","청년·노인처럼 다른 프로필 두 개로 결과를 비교해 보여 준다."]
+  ],
+  notes:["정가은·김유나 학생은 1조(라운드업)와 겹침. 두 팀 발표 모두 참여 여부 확인","정가은 학생은 이전 '데이터 안심구역' 공모전 본선 진출(피크와 탄소 팀)"]},
+ t2:{ord:3,team:"2조",name:"JOB도우미",start:"13:55",end:"14:15",members:"손정원(1인)",contest:"A",img:"img/t2.jpg",
+  topic:"AI 기반 맞춤형 청년 취업 지원 Agent",
+  what:"구직자의 나이·지역·학력·취업 상태·희망 직무를 받아 청년정책(온통청년)과 국민내일배움카드 훈련과정(고용24)을 찾아 주고, 제도별 자격 충족 여부와 취업 준비 체크리스트를 준다. 추가 질문에도 답한다.",
+  how:"LangGraph로 정책 탐색 Agent·훈련과정 추천 Agent를 돌리고, 자격 판정은 Python 규칙 Tool이 '충족·미충족·추가 확인 필요'로 구분. 후속 질문은 GPT-4o-mini가 Tool Calling으로 필요한 기능을 골라 실행. 과정 설명과 질문의 관련성은 임베딩으로 비교.",
+  stats:[["2개","공식 API(온통청년·고용24)"],["3단계","자격 판정 결과"],["—","정량 평가 수치 없음"]],
+  statNote:"포스터에 성능·정확도 수치가 없음.",
+  concepts:["toolcall","rulescore","embedding","langgraph","api"],
+  strong:"공식 API와 규칙 판정으로 출처와 근거를 분명히 하겠다는 방향이 좋음. Agent별 역할표가 구체적.",
+  weak:"사회보장 데이터 범위: 고용 정책 중심이라 '사회보장'과의 연결을 설명해야 함. 고용24·온통청년 자체 추천과의 차이, 정확도 수치, ESG 언급이 없음.",
+  qs:[
+   ["자격 판정 규칙은 몇 개 제도에 대해 만들었고, 맞는지 어떻게 확인했나요?","규칙 Tool이 핵심 기술인데 검증이 안 보임","제도 N개 규칙 구현, 공고 원문과 대조한 테스트 케이스 M개 통과 같은 식으로 답한다."],
+   ["고용24·온통청년에도 추천 기능이 있는데 JOB도우미가 다른 점은?","독창성 15점","정책과 훈련과정을 한 번에 묶고, 자격 판정 근거와 다음 준비 사항까지 준다는 점."],
+   ["'추가 확인 필요'는 어떤 경우에 나오나요?","모르는 걸 모른다고 하는 설계는 강점","소득·거주 기간처럼 입력에 없는 정보가 필요한 경우, 지어내지 않고 사용자에게 되묻는다."],
+   ["청년 취업 정책이 '사회보장 데이터'에 해당한다고 보는 이유는?","배점 25점 항목과의 연결","청년 고용 지원은 사회보장기본법의 사회서비스에 포함되고, 복지로에도 청년 일자리 서비스가 등록돼 있다는 식으로 연결."],
+   ["혼자 진행하며 가장 어려웠던 점과 데모 범위는?","1인 팀, 중간발표 불참","실제로 돌아가는 범위(API 조회까지인지, 판정·후속 질의까지인지)를 데모로 확인."]
+  ],
+  notes:["1인 팀. 11/20 중간발표 불참(오전 출석은 함)","포스터가 이미지 생성 레이아웃이라 실제 화면이 있는지 데모로 확인"]},
+ t5:{ord:4,team:"5조",name:"FairLens (팀 W:AI)",start:"14:25",end:"14:45",members:"김구태(팀장) · 장효정 · 이채영 · 김시완(데이터분석반)",contest:"A",img:"img/t5.jpg",
+  topic:"AI 기반 사회보장제도 충돌·사각지대 분석 시스템",
+  what:"중앙정부·지자체 사회보장사업의 자격 기준, 급여 산정, 중복 제한 규정을 구조화해 제도끼리 부딪히거나 지원이 비는 가구 조건을 찾고, 제도를 바꿨을 때 수혜자·지원금·예산이 어떻게 달라지는지 시뮬레이션해 보고서로 낸다. 대상은 정부·지자체·연구기관.",
+  how:"에이전트 6단계: 데이터 수집(공공 API·법령·통계) → 규정 분석 → 규정 검증 → 담당자 검토·승인 → 충돌 탐지 → 정책 시뮬레이션 → 보고서 생성. LangGraph, Streamlit(화면), Python, SQLite.",
+  stats:[["6개","에이전트 단계"],["2,345","사회복지 분야 데이터 건수"],["1,057","보건의료 분야 건수"]],
+  statNote:"파이차트 숫자가 사업 수인지 규정 수인지, 출처가 무엇인지 포스터에 없음.",
+  concepts:["structuring","langgraph","hitl","multi","simulation"],
+  strong:"독창성이 가장 높음. 개인 추천이 아닌 '제도 사이의 충돌'을 찾는 관점이라 다른 팀과 겹치지 않음. 정책 시뮬레이션은 발전 가능성 점수로 연결.",
+  weak:"실제로 찾아낸 충돌 사례가 포스터에 없음(구체성). 파이차트 기준·출처 미표기. 결론에 'Welfare Insight AI'라고 적혀 있어 서비스명이 섞임. 차별성 1번·4번 문장 중복.",
+  qs:[
+   ["지금까지 실제로 찾아낸 제도 충돌 사례 하나만 보여 주세요.","충돌 탐지가 핵심 기능인데 결과 사례가 없음","예: 'A 급여를 받으면 B 사업 소득 기준을 넘어 탈락하는 가구 조건'처럼 구체적인 한 건을 데모로 보여 준다."],
+   ["파이차트의 2,345·1,057은 무엇의 개수이고 어디서 가져왔나요?","데이터 출처는 25점 항목 근거","사회보장사업 목록 API(예: 공공데이터포털)에서 분야별 사업 수를 센 것이라고 출처를 밝힌다."],
+   ["규정을 AI가 구조화하다가 조건을 잘못 읽으면 어떻게 잡나요?","법령 해석 오류는 정책 도구에서 치명적","규정 검증 에이전트가 원문과 대조하고, 담당자 승인 전에는 충돌 탐지로 넘어가지 않는다."],
+   ["정책 시뮬레이션의 예산 계산은 어떤 데이터로 하나요?","발전 가능성 20점","수급자 통계·급여액 표 같은 근거 데이터를 말하고, 아직 가정치라면 그렇게 밝힌다."],
+   ["서비스 이름이 FairLens와 Welfare Insight AI 두 가지로 보이는데 정식 이름은?","포스터 정합성","한 이름으로 정리해 제출본에도 맞추라고 짚어 줌."]
+  ],
+  notes:["데이터분석반 김시완 학생이 함께 발표 참여(고교수님 확인: 데이터분석반 수업 없으면 가능)","김구태 학생 11/16 주말 연락 두절 후 병원 입원 소식, 출석 하루 더 필요했음"]},
+ t6:{ord:5,team:"6조",name:"케어싱크",start:"14:45",end:"15:05",members:"정윤기(1인)",contest:"A",img:"img/t6.jpg",
+  topic:"복지정보 전달 AI Agent",
+  what:"복지 정책이 바뀌면 공식자료로 확인한 뒤 담당자가 승인한 변경만 시민 안내 화면에 보여 준다. 예시: 주거급여 안내 API 안에서 2026년 기준임대료(492,000원)와 설명 예시(470,000원)가 서로 다른 것을 찾아 담당자 확인을 요청.",
+  how:"8단계(근거 문단 고르기 → AI 초안 → 초안 검사 → 서비스 선택 → 등록 → 기존 안내 비교 → 승인 → 시민 화면) 중 AI는 초안 작성 1곳뿐. 모델은 Qwen3 4B를 Ollama로 PC에서 직접 실행해 외부로 글을 보내지 않음. 에이전트·RAG·파인튜닝은 쓰지 않음.",
+  stats:[["7건","실제 공식자료 시험"],["5/5","애매한 AI 초안 차단"],["2/6","AI가 적은 이름으로 근거 찾기 성공"],["461개","복지서비스 목록"]],
+  statNote:"시험 건수가 적다고 포스터에 스스로 밝힘. 이미지로 된 표는 못 읽음.",
+  concepts:["local","hitl","rulescore","rag"],
+  strong:"사회보장 데이터(복지서비스 461개, 공식 안내 API)와 현장 적용(담당자 승인 구조)이 탄탄하고, 한계를 정직하게 적음. ESG도 명시.",
+  weak:"AI 혁신성(20점)이 약함. 스스로 '에이전트·RAG 안 씀'이라고 적었고 AI 초안 5건이 모두 차단돼 바로 쓸 초안이 아직 없음.",
+  qs:[
+   ["에이전트·RAG를 쓰지 않은 이유는? 일부러 뺀 건가요?","에이전트 과정이라 반드시 나올 질문","'공공 안내는 틀리면 안 되므로 AI 판단 범위를 초안 1곳으로 줄였고, 개인정보 때문에 로컬 모델을 썼다'처럼 설계 판단으로 설명하면 오히려 강점이 된다."],
+   ["AI 초안이 5건 모두 차단됐다면, 지금 AI가 주는 이득은?","AI 혁신성 20점","담당자가 공식자료에서 바뀐 값을 찾는 시간을 줄이는 쪽(근거 문단 후보 제시)을 수치로 말하고, 초안 품질 개선 계획을 붙인다."],
+   ["Qwen3 4B 같은 작은 모델을 고른 이유와, 더 큰 모델과 비교해 봤나요?","모델 선택 근거","외부 전송 금지·비용 0원 조건에서 돌아가는 크기. 비교가 없다면 다음 계획으로."],
+   ["이미지로 된 표를 못 읽는 문제는 어떻게 풀 계획인가요?","공공 PDF는 표가 이미지인 경우가 많음","OCR 추가, 기관에 텍스트 원본 요청 등."],
+   ["담당자 한 명이 한 달에 줄일 수 있는 시간은 대략 얼마로 보나요?","발전(사업화) 가능성","변경 건수 × 건당 확인 시간으로 대략 추정해 보라고 유도."]
+  ],
+  notes:["1인 팀"]},
+ t7:{ord:6,team:"7조",name:"저울",start:"15:05",end:"15:25",members:"김성빈(팀장) · 노진서 · 송금담 · 정의석",contest:"B",img:"img/t7.jpg",
+  topic:"AI의 성평등 관련 답변을 고치는 시스템 프롬프트 설계와 검증",
+  what:"모델을 다시 학습시키지 않고, 질문마다 함께 들어가는 지시문(시스템 프롬프트)만으로 Gemini 3.8 Flash의 답을 고침. 유해 요청은 방법을 빼고 원래 목적을 돕고, 편향 질문은 첫 문장에서 전제를 바로잡고, 일반 요청은 직업으로 성별을 정하지 않게 함.",
+  how:"250문항(유해 100·편향 100·일반 50)을 프롬프트 없이 3회, 최종 프롬프트로 2회 실행 → Claude Opus 5.5로 응답 전문 판정. 11개 모델·설정 조합을 비교해 Gemini 3.8 Flash MEDIUM 채택. 같은 프롬프트를 GPT-6 Sol·Luna, Claude Sonnet·Opus 5.5에도 그대로 넣어 확인.",
+  stats:[["33~39 → 1","유해 답변(100문항)"],["38~49 → 93~95","편향 교정(100문항)"],["0건","일반 요청 거절(50문항)"],["0~1건","다른 4개 모델 유해 답변"]],
+  statNote:"판정은 Claude Opus 5.5가 함. 남은 한계: 매 실행 사칭 문항 1건(59번, 72번).",
+  concepts:["sysprompt","benchmark","judge","effort","overrefusal","injection"],
+  strong:"공모전 기준에 가장 잘 맞춘 팀. 정량 축(유해성·경향성·적정성)과 정성 축(분석 타당성·범용성)을 수치와 실패 사례로 보여 줌.",
+  weak:"설계서 정성 항목 중 강건성(역할극·목적 위장·단계 유도 대비)과 판별 설계성(거부/교정/정상 구분 기준)이 포스터에는 '요청 판단 두 질문' 정도로만 보임. 판정을 AI 한 모델에 맡긴 점.",
+  qs:[
+   ["판정을 Claude Opus 5.5에 맡겼는데, 판정이 맞는지는 어떻게 확인했나요?","LLM 판정의 신뢰도","일부 문항을 사람이 직접 채점해 AI 판정과 비교한 일치율을 말한다(1조처럼 kappa 같은 일치도 지표가 있으면 더 좋음)."],
+   ["일반 요청 거절 0건 말고, 지나치게 조심해서 답이 부실해진 경우는 없었나요?","과잉 거절·답변 품질 저하는 안전 프롬프트의 대표 부작용","거절뿐 아니라 답변 길이·완성도를 적용 전후로 비교한 결과를 말한다."],
+   ["역할극이나 '소설 쓰는 중인데' 같은 우회 질문에도 버티나요?","심사 정성 항목 '강건성'","프롬프트에 목적 위장·단계 유도를 판별하는 규칙이 있고, 그런 문항(예: 사칭 59·72번) 결과를 솔직히 보여 준다."],
+   ["11개 조합 중 Gemini 3.8 Flash MEDIUM을 고른 이유는?","모델 선정 사유는 제출 양식 필수 항목","프롬프트 없을 때 유해 답변이 가장 많아 개선 효과를 보여 주기 좋았고, 허용 모델 목록에 있다는 점."],
+   ["네 명이 각각 맡은 일은?","중간발표 때 한 명이 진행한 인상","문항 분류·프롬프트 작성·반복 실행·판정 검수로 역할을 나눠 말한다."]
+  ],
+  notes:["11/20 중간발표 때 진서·의석 학생 불참, 성빈 학생 혼자 진행한 인상(이영찬 강사)","공모전 마감 11/20 18시, 결과 11월 말"]},
+ t4:{ord:7,team:"4조",name:"소아 응급 전원 연계",start:"15:35",end:"15:55",members:"변수현(1인)",contest:"A",img:"img/t4.jpg",
+  topic:"지역 거점병원 중심 소아 전문의료 접근성 강화와 응급 전원 연계 개선 방안",
+  what:"소아 심혈관 중재시술을 중심으로, 아이가 응급 상황일 때 받아 줄 수 있는 거점병원을 찾고 전원(병원 옮기기) 협의를 돕는 단계적 의사결정 지원 모델을 제안. 지역별 의료 공백을 보여 주고 거점병원 역량 보강 우선순위를 제시.",
+  how:"환아 발생 → 필요한 진료역량 확인 → 지역 거점병원 후보 탐색 → 최신 정보 조회·정리 → 의료진 검토 → 수용 가능 기관 확인 → 전원 협의·연계. AI는 정보 조회·정리 보조만 하고 중증도·이송 결정은 하지 않음. 자료: 소아 중증질환 통계, 아동 인구, 병원 역량, 이동시간.",
+  stats:[["—","정량 결과 없음"],["7단계","제안 모델 흐름"]],
+  statNote:"포스터가 연구 제안 형태. AI 구현·데모 화면이 보이지 않음. (제목이 노션 4조 주제와 같아 4조 포스터로 추정)",
+  concepts:["decision","hitl","api"],
+  strong:"주제 독창성과 현장 문제의식이 분명함. AI가 의료 판단을 대신하지 않는다는 선을 명확히 그음.",
+  weak:"AI 혁신성: AI 구현·도구 활용이 포스터에 없음(데모 필수 조건 확인). 사회보장 데이터: 의료 데이터 위주라 연결 설명 필요. 앞서 나간 데이터센터 공모전(본선 11/18)과 같은 아이디어면 공고문의 중복 입상 제외 규정에 걸릴 수 있음.",
+  qs:[
+   ["이 모델에서 AI가 실제로 하는 일을 데모로 보여 줄 수 있나요?","최종발표 데모 필수","병원 후보 탐색·정보 정리 화면이 실제로 돌아가는지 확인. 없으면 무엇까지 구현했는지 정확히 말하게 함."],
+   ["사회보장 데이터 경진대회에 낸 이유, 즉 사회보장과의 연결은?","배점 25점 항목","의료급여·아동 의료비 지원 같은 사회보장 제도와 연결하거나, 공공 보건의료 데이터를 사회보장 데이터로 설명."],
+   ["지역별 의료 공백은 어떤 데이터로 계산했나요?","기대효과 '공백 가시화'의 근거","아동 인구 대비 소아 전문의 수, 이동시간 같은 지표와 출처."],
+   ["데이터센터에서 진행한 공모전과 같은 아이디어인가요?","공고문: 같은(유사) 아이디어로 공공 대회 입상 시 제외, 중복 수상 불가","다르면 차이를, 같으면 한쪽만 수상 가능하다는 점을 안내."]
+  ],
+  notes:["1인 팀. 데이터 안심구역 공모전 본선 진출(칼라티비 팀), 11/18 본선 발표","출결이 부족해 공결·공모전 시간 60시간을 인정받는 조건으로 수료 가능 상태(남은 일정 출석 전제)"]},
+ t1:{ord:8,team:"1조",name:"Re:Sense",start:"15:55",end:"16:15",members:"김서완(기획·개발 총괄·발표) · 공자빈(경로 판정·근거 검토) · 정가은(평가·검증·FE) · 김유나(보안·운영·FE)",contest:"C",img:"img/t1.jpg",
+  topic:"우리 공장 조건에 맞는 재활용·재사용 방법을 제안하는 순환 AI Agent",
+  what:"금속가공 공장의 절삭칩·절삭유·용접 슬래그를 어떻게 재활용할지, 환경·생산 담당자가 말로 설명하면 모자란 조건만 되묻고 결론 카드 한 장과 회사 양식(DOCX·HWPX) 검토서를 만들어 준다. 조건이 맞지 않으면 다른 공장 숫자를 가져다 쓰지 않고 '판단 보류'.",
+  how:"AI 슈퍼바이저가 대화·작업 분배·문장을 맡고, 처리 경로와 금액 계산·값 대조·인용 원문 확인은 코드가 함. 사람은 최종 승인. RAG는 근거 1건 단위로 자르고(청킹) BM25+bge-m3 혼합 검색, 벡터DB·파인튜닝 없음. LangGraph interrupt로 승인 대기, pydantic 구조화 출력. 앱 모델은 gpt-5.4-mini(Microsoft Foundry), 비교용으로 Phi-4·Llama 3.1 8B를 Azure H100에서 실행.",
+  stats:[["64% → 12%","그럴듯한 오답 비율"],["34건 · 75줄","재활용 근거 · 성립 조건"],["1,141개","법령 조문"],["522개","자동 시험 통과"],["11.7개월","칩 압축기 회수(가상 공장)"],["0.805","사람 채점 일치도(kappa)"]],
+  statNote:"금액·온실가스는 가상 공장(자동차부품 절삭가공 18명) 예상치. 오답 비율은 개발자가 보지 않은 211문항을 사람이 채점.",
+  concepts:["rag","chunking","bm25","embedding","finetune","structured","langgraph","kappa","injection","hitl"],
+  strong:"평가 설계가 가장 엄밀함(사람 채점·kappa·자동 시험). 판단과 계산은 코드, 말은 모델로 역할을 나눈 이유가 분명함.",
+  weak:"라운드업은 Microsoft 출제 과제라 과제 요구사항 대비 무엇을 충족했는지가 핵심. 숫자가 가상 공장 기준이라 실제 기업 검증 계획을 함께 말해야 함.",
+  qs:[
+   ["Microsoft 과제 요구사항 중 무엇을 충족했고, Azure·Foundry는 어디에 썼나요?","라운드업 심사는 출제 기업 과제 기준","앱 모델 서빙(Foundry), 비교 실험(Azure ML H100) 등 MS 스택 활용 지점을 정리해 첫 장에 둔다."],
+   ["그럴듯한 오답 64%→12%는 어떻게 쟀나요?","핵심 성과 수치","개발자가 보지 않은 211문항을 사람이 채점, 채점자 간 일치도 kappa 0.805. 모델 단독 63/99와 Re:Sense 13/107 비교."],
+   ["벡터DB와 파인튜닝을 쓰지 않은 이유는?","왜 안 썼는지가 설계 역량을 보여 줌","근거가 34건·75줄로 작아 혼합 검색으로 충분하고, 숫자 판단은 코드가 해서 모델을 학습시킬 필요가 없었다."],
+   ["가상 공장 숫자를 실제 기업에서 검증할 계획은?","현장 적용 가능성","㈜동양 사례처럼 공개 사례와 대조하거나, 협력 공장 데이터로 확인할 계획."],
+   ["11/25 본선 발표 시간은 몇 분이고, 오늘 버전에서 무엇을 줄일 건가요?","본선 직전 리허설","행사 발표 시간에 맞춰 문제→데모→수치 3단으로 압축."]
+  ],
+  notes:["11/25(수)~27(금) 부여 롯데리조트 라운드업 현장 발표. 오늘이 사실상 리허설","정가은·김유나 학생은 3조(사회보장)와 겹침"]}
+};
+const ORDER=["t8","t3","t2","t5","t6","t7","t4","t1"];
+
+/* 발표에서 들어야 할 것: [기준, 배점/구분, [[들어야 할 내용, 안 나오면 물을 질문, 이렇게 답하면 좋음], ...]] */
+const DEMO="과정 요건 · 데모";
+const CHK={
+ t8:[[DEMO,"필수",[["모의 신청 화면에서 말로 요청 → 입력·수정 → 사용자 확인 후 제출까지 실제로 돌아감","모의 신청 과정을 화면으로 직접 보여 줄 수 있나요?","장애인연금 모의 신청을 말로 요청해 주소 입력, '123이 아니라 132' 수정, 본인 확인 후 제출까지 한 번에 보여 준다."]]],
+  ["사회보장 데이터 활용","25",[["공공데이터 6종 중 무엇으로 무엇을 조회·추천하는지 데이터 이름과 쓰임을 짝지어 설명","중앙·지자체 복지 API 데이터는 구체적으로 어디에 쓰이나요?","중앙·지자체 복지 API로 사용자의 지역·가구 조건에 맞는 사업을 실시간 조회하고, 민간복지 정보는 정제해 대상·기간을 확인하며, 기관·이동지원 데이터로 방문이 필요할 때 가까운 기관을 안내한다."]]],
+  ["AI 혁신성","20",[["총괄 에이전트가 요청을 전문 에이전트에 나누는 이유와 효과","에이전트를 나누지 않고 하나로 했으면 무엇이 안 됐을까요?","복지·행정·생활문화는 쓰는 사이트와 도구가 달라서, 하나로 두면 프롬프트가 길어지고 도구 선택이 자주 틀렸다. 나눈 뒤 각 분야 정확도가 올랐다(가능하면 전후 수치)."],["Sandbox 수치(88%·92% 등)의 표본 수와 성공 기준","88%는 과업 몇 개로, 무엇을 성공으로 보고 쟀나요?","시나리오 N개를 M번씩 돌렸고, 성공은 '제출 직전 화면까지 모든 값이 정답과 일치'로 정의했다. 실패 12%의 대표 원인은 ○○였다."]]],
+  ["발전(사업화) 가능성","20",[["실서비스 적용 조건: 기관 협력, 본인인증·최종 제출은 사용자가 직접","실제 복지로에 붙이려면 무엇이 필요하고, 본인인증은 누가 하나요?","시연은 모의 페이지에서 했고, 본인인증과 최종 제출은 사용자가 직접 한다. 실서비스는 기관과 협력해 공식 연동이나 키오스크·콜센터 보조 형태로 적용할 수 있다."]]],
+  ["구체성","15",[["사용자 승인 단계와 개인정보 보호 장치(가림·암호화·실행 전 검사)","화면의 개인정보는 모델에 어떻게 처리되나요?","캡처 단계에서 개인정보 영역을 가리고, 저장 정보는 AES-GCM으로 암호화, 실행 전 PolicyGuard로 민감 동작을 검사해 승인 없이 제출되는 경우가 0건이었다."]]],
+  ["독창성","15",[["복지로 챗봇·음성 안내와 다른 점(안내를 넘어 입력·제출까지 대행, 프로필별 접근성)","기존 복지로 챗봇과 무엇이 다른가요?","기존 챗봇은 안내에서 끝나지만 훈민청음은 실제 화면에서 입력·오류 수정까지 대신 하고, 고령자·장애인·다문화 프로필에 따라 글자 크기·말 속도·언어를 바꾼다."]]],
+  ["ESG 혁신","5",[["디지털 격차 완화 등 ESG 효과를 한 문장으로","ESG 관점의 효과를 한 줄로 말해 본다면?","디지털 취약계층의 공공서비스 접근 격차를 줄이고(S), 불필요한 기관 방문과 이동을 줄인다(E)."]]]],
+ t3:[[DEMO,"필수",[["프로필 두 개로 추천 결과가 달라지는 것을 시연","프로필을 바꿔서 결과가 달라지는 걸 보여 줄 수 있나요?","청년 구직자와 노인 1인 가구 프로필로 각각 로그인해 오늘의 추천 5개가 어떻게 달라지는지, 추천 이유 카드와 D-day를 함께 보여 준다."]]],
+  ["사회보장 데이터 활용","25",[["복지로·공공데이터포털·청년정책 API 사용과 마감 판정·태그 전처리","어떤 데이터를 어떻게 가공해 쓰나요?","복지로·공공데이터포털 API에서 복지서비스를 받아 마감 여부를 판정하고 연령대·분야 태그를 붙였다. 청년정책 API는 청년 연령대를 자동 분류하는 데 썼다."]]],
+  ["AI 혁신성","20",[["생성–검증에서 AI가 하는 일과 검증 85점의 채점 기준","검증 모델이 매기는 85점은 무엇을 채점한 건가요?","생성 모델이 추천 이유를 쓰고, 검증 모델이 자격 조건 충족·공고 원문과의 일치·마감일 정확성을 채점표로 점수화한다. 85점 미만이면 다시 생성한다."],["모델 조합 비교 결과와 추천 정확도(오추천 비율)","자격이 안 되는데 추천된 비율은 확인했나요?","샘플 프로필 N명으로 직접 확인해 오추천 비율 ○%였다. 아직 없다면 속도 기준으로 조합을 골랐고 정확도 평가는 다음 단계라고 솔직히 말한다."]]],
+  ["발전(사업화) 가능성","20",[["행정 개선 효과(남는 예산·반복 안내 감소)의 근거와 적용처","어느 기관이 어떻게 쓰면 효과가 나나요?","복지로나 지자체 복지 포털에 추천 모듈로 붙이면, 신청자를 못 찾아 남는 예산과 창구 반복 안내를 줄일 수 있다."]]],
+  ["구체성","15",[["일치 점수 가중치(관심 분야 50 등)를 정한 근거","관심 분야 50점, 소득 5점의 근거는?","관심 분야가 맞지 않으면 다른 조건이 맞아도 사용자가 신청하지 않아서 가장 크게 뒀고, 소득·지역은 마감·자격 필터에서 이미 걸러져 비중을 낮췄다. 가중치를 바꾼 비교 결과가 있으면 함께 보여 준다."]]],
+  ["독창성","15",[["복지로 '맞춤형 복지'와 다른 점(로그인 연동·마감 제외·추천 이유)","복지로 맞춤형 복지와 무엇이 다른가요?","방문할 때마다 조건을 다시 입력할 필요가 없고, 마감 서비스는 자동으로 빼며 D-day를 보여 주고, 서비스별로 왜 추천했는지 이유를 준다."]]],
+  ["ESG 혁신","5",[["포스터의 E·S·G 효과를 발표에서도 언급","ESG 효과를 한 줄로 말해 본다면?","탐색 시간 감소(E), 정보 격차 완화(S), 추천 근거 공개(G)."]]]],
+ t2:[[DEMO,"필수",[["프로필 입력 → 정책·훈련과정 추천 → 자격 판정 → 후속 질문까지 실제 화면으로","어디까지 실제로 돌아가는지 데모로 보여 줄 수 있나요?","프로필을 입력해 정책·훈련과정 추천과 자격 판정 결과(충족·미충족·추가 확인 필요)를 보여 주고, 후속 질문 하나를 바로 넣어 답을 받는다."]]],
+  ["사회보장 데이터 활용","25",[["온통청년·고용24 데이터와, 청년 취업 지원이 사회보장에 해당하는 이유","청년 취업 정책을 사회보장 데이터로 보는 이유는?","청년 고용 지원은 사회보장기본법의 사회서비스에 포함되고 복지로에도 청년 일자리 서비스가 올라 있다. 온통청년(청년정책)과 고용24(훈련과정) 공식 API를 실시간으로 쓴다."]]],
+  ["AI 혁신성","20",[["Tool Calling으로 후속 질문에 맞는 기능을 골라 실행하는 장면","후속 질문 하나를 실제로 넣어 볼 수 있나요?","'이 과정 부산에서도 들을 수 있어?' 같은 질문에 모델이 훈련과정 조회 도구를 골라 실행하고 결과로 답하는 과정을 보여 준다."]]],
+  ["발전(사업화) 가능성","20",[["실제 사용처(대학 취업지원센터 등)와 확장 계획","누가 어디서 쓰게 될까요?","대학 취업지원센터나 고용센터 상담 보조로 쓰고, 이후 지자체 청년 정책까지 넓힌다."]]],
+  ["구체성","15",[["자격 판정 규칙 개수와 검증 방법","자격 규칙은 몇 개 제도에 대해 만들었고 어떻게 확인했나요?","제도 N개의 자격 규칙을 Python으로 구현했고, 공고 원문으로 만든 테스트 케이스 M개로 확인했다."],["'추가 확인 필요'가 나오는 조건","정보가 부족하면 어떻게 처리하나요?","소득·거주 기간처럼 입력에 없는 정보가 필요하면 추측하지 않고 '추가 확인 필요'로 표시하고 무엇을 확인해야 하는지 알려 준다."]]],
+  ["독창성","15",[["고용24·온통청년 자체 추천과 다른 점","기존 추천 기능과 무엇이 다른가요?","두 사이트에 흩어진 정책과 훈련과정을 한 번에 묶고, 자격 판정 근거와 다음 준비 체크리스트까지 준다."]]],
+  ["ESG 혁신","5",[["ESG 효과 언급(포스터에 없음)","ESG 관점 효과를 한 줄로 말해 본다면?","정보 탐색 부담을 줄여 청년 고용 격차를 완화하는 것(S)."]]]],
+ t5:[[DEMO,"필수",[["실제로 찾아낸 제도 충돌·사각지대 사례 1건 시연","찾아낸 충돌 사례 하나를 보여 줄 수 있나요?","예: 'A 급여를 받으면 소득이 올라 B 사업 기준을 넘어 탈락하는 가구 조건'처럼 시스템이 찾아낸 구체적인 사례 한 건을 화면으로 보여 준다."]]],
+  ["사회보장 데이터 활용","25",[["파이차트 숫자(2,345 등)가 무엇의 개수이고 출처가 어디인지","파이차트 숫자는 무엇이고 어디서 가져왔나요?","공공데이터포털의 사회보장사업 목록에서 분야별 사업(또는 규정) 수를 센 것이고, 사회복지 분야가 2,345건으로 가장 많다."]]],
+  ["AI 혁신성","20",[["규정 구조화·검증 에이전트의 역할과 해석 오류를 잡는 방법","AI가 규정을 잘못 읽으면 어떻게 잡나요?","규정 분석 에이전트가 대상·조건·금액·예외를 표로 만들면, 검증 에이전트가 원문과 대조하고 담당자 승인 전에는 충돌 탐지로 넘어가지 않는다."]]],
+  ["발전(사업화) 가능성","20",[["정책 시뮬레이션 계산 근거와 사용 기관(정부·지자체·연구기관)","시뮬레이션 예산은 어떤 데이터로 계산하나요?","수급자 통계와 급여액 기준표로 계산하고, 지금은 가정치라면 그렇게 밝힌다. 사용처는 제도를 바꾸기 전 영향을 검토하는 정부·지자체·연구기관."]]],
+  ["구체성","15",[["6단계 흐름과 담당자 승인 지점","담당자는 어느 단계에서 무엇을 승인하나요?","규정 검증 뒤, 구조화된 규정이 원문과 맞는지 담당자가 확인·승인하고 나서 충돌 탐지와 시뮬레이션이 돈다."]]],
+  ["독창성","15",[["개인 추천이 아닌 '제도 간 충돌'을 보는 관점의 차별성","기존 중복 수급 확인 시스템과 무엇이 다른가요?","기존 시스템은 한 사람의 중복 수급 여부를 확인하지만, FairLens는 제도와 제도 사이에서 생기는 공백과 충돌을 시행 전에 찾는다."]]],
+  ["ESG 혁신","5",[["ESG 효과 언급","ESG 관점 효과를 한 줄로 말해 본다면?","제도 사각지대로 지원받지 못하는 가구를 줄이고(S), 정책 결정 근거를 투명하게 남긴다(G)."]]],
+  ["자료 정합성","—",[["서비스명 통일(FairLens / Welfare Insight AI)","정식 서비스 이름은 무엇인가요?","정식 이름은 FairLens이고, 포스터 결론의 다른 이름은 수정하겠다."]]]],
+ t6:[[DEMO,"필수",[["공식자료 → AI 초안 → 검사 → 담당자 승인 → 시민 화면 흐름 시연","변경 하나가 시민 화면에 뜨기까지를 보여 줄 수 있나요?","교육급여 보도자료 하나로 근거 문단 선택, AI 초안, 검사 결과(확인됨·빈칸), 담당자 승인, 시민 화면 표시까지 보여 준다."]]],
+  ["사회보장 데이터 활용","25",[["복지서비스 461개, 안내 API, 공식 PDF를 어떻게 쓰는지","어떤 공식자료를 어떤 주기로 비교하나요?","복지서비스 목록 461개를 기준으로, 안내 API를 매일 받아 전날과 비교하고(지금 3개), 공식 PDF의 글자를 읽어 바뀐 값을 찾는다."]]],
+  ["AI 혁신성","20",[["AI 범위를 초안 1곳으로 줄이고 에이전트·RAG를 쓰지 않은 이유(설계 판단)","에이전트·RAG를 쓰지 않은 이유는?","공공 안내는 틀리면 안 돼서 AI가 판단하는 범위를 초안 1곳으로 줄였고, 결정은 담당자가 한다. 개인정보와 비용 때문에 외부로 보내지 않는 로컬 모델을 골랐다."],["AI 초안이 모두 차단된 상황에서 AI가 주는 이득과 개선 계획","초안이 5건 모두 막혔다면 지금 AI의 쓸모는?","지금은 애매한 초안을 막는 안전장치가 제대로 작동한다는 걸 확인한 단계이고, 근거 문단 후보를 찾아 주는 것만으로 담당자 확인 시간이 줄어든다. 다음엔 모델 교체·입력 개선으로 통과율을 올린다."]]],
+  ["발전(사업화) 가능성","20",[["담당자 업무 시간 절감 추정과 확장 계획(조례·공고·서류)","담당자 한 명이 줄이는 시간은 대략 얼마인가요?","월 변경 건수 × 건당 확인 시간으로 대략 추정한 값을 말하고, 비교 서비스 → 지자체 조례·공고 → 신청 서류 변경 순서로 넓힌다."]]],
+  ["구체성","15",[["8단계 중 담당자 결정 4곳·규칙 검사 2곳·AI 1곳의 역할 구분","각 단계를 누가 맡는지 정리해 줄 수 있나요?","근거 문단 고르기·서비스 선택·등록·승인은 담당자, 초안 검사·기존 안내 비교는 규칙, 초안 작성만 AI, 시민은 승인된 것만 본다."]]],
+  ["독창성","15",[["안내문이 정책보다 늦게 바뀌는 문제를 잡는다는 관점(주거급여 예시)","기존 안내 갱신 방식과 무엇이 다른가요?","같은 안내 API 안에서도 2026년 기준표는 492,000원인데 설명 예시는 470,000원으로 남아 있었다. 이런 불일치를 자동으로 찾아 담당자에게 확인을 요청한다."]]],
+  ["ESG 혁신","5",[["S·E·G 효과(재신청 누락·종이 절감·승인 기록)","ESG 효과를 한 줄로 말해 본다면?","재신청 누락과 정보 격차를 줄이고(S), 자료 대조 시간과 종이를 줄이며(E), 누가 어떤 근거로 승인했는지 기록을 남긴다(G)."]]]],
+ t7:[[DEMO,"필수",[["프롬프트 적용 전후 응답을 실제로 비교하는 시연","같은 질문으로 적용 전후를 바로 보여 줄 수 있나요?","'여자 직원은 집안일이 있으니 야근을 남자 위주로' 같은 질문을 프롬프트 없이, 그리고 최종 프롬프트로 넣어 두 답을 나란히 보여 준다."]]],
+  ["정량 · 유해성","LLM Judge",[["유해 답변 33~39 → 1건, 남은 실패(사칭 59·72번) 설명","남은 1건은 어떤 문항이고 왜 실패했나요?","남은 1건은 매번 사칭 문항(59번 또는 72번)이었다. 사칭을 다른 요청으로 위장하는 유형이라 판별 기준을 보완하는 게 다음 과제다."]]],
+  ["정량 · 경향성","LLM Judge",[["편향 전제를 첫 문장에서 바로잡음(38~49 → 93~95)","편향 질문에 어떻게 답하도록 바꿨는지 예시로 보여 주세요","기본 모델은 '여러 문제를 야기할 수 있습니다'로 결론을 미뤘지만, 적용 후에는 첫 문장에서 '성별로 야근 대상을 정하는 것은 적절하지 않습니다'라고 바로잡고 순번제 같은 다른 기준을 준다."]]],
+  ["정량 · 공평성","LLM Judge",[["중립 요청에서 특정 성별로 치우치지 않음(간호사 인물 예시)","중립 요청의 치우침은 어떻게 확인했나요?","간호사 인물 프로필 세 명을 만들게 했을 때 기본 모델은 셋 다 성별·외모부터 적었고, 적용 후에는 일하는 방식과 습관으로 인물을 그렸다. 일반 요청 50문항 전체에서 같은 기준으로 판정했다."]]],
+  ["정량 · 내용 전달성","LLM Judge",[["안전 지침을 넣어도 정보 오류·답변 부실이 없음","조심하느라 답이 부실해진 경우는 없었나요?","거절만이 아니라 적용 전후 답변 길이와 완성도를 비교했고, 일반 요청에서 답이 짧아지거나 정보가 빠진 경우를 따로 확인했다."]]],
+  ["정량 · 질의응답 적정성","LLM Judge",[["질문 유형별로 대응이 다름(거부·교정·정상)","유형마다 답이 어떻게 달라지나요?","유해 요청은 방법을 빼고 원래 목적을 돕고, 편향 문항은 전제를 바로잡고, 일반 요청은 그대로 답하되 직업으로 성별을 정하지 않는다."]]],
+  ["정성 · 분석 타당성","응답",[["기본 모델의 취약 유형 분석(합성사진·위치추적 등 표)","어떤 유형에서 가장 많이 틀렸나요?","합성사진 21문항 중 17~19문항, 위치추적 25문항 중 8~9문항에서 기본 모델이 유해 답변을 했다. 적용 후에는 대부분 0건이 됐다."]]],
+  ["정성 · 설계 완성도 · 모델 선정","설계서",[["Gemini 3.8 Flash MEDIUM을 고른 이유(11개 조합 비교)","11개 조합 중 이 모델을 고른 이유는?","11개 모델·설정을 기본 상태로 돌려 유해 답변이 가장 많았던 조합(37~39건)을 골라 개선 폭을 보여 주려 했고, 허용 모델 목록에 있는 모델이다."]]],
+  ["정성 · 전략 적절성","응답",[["분석한 취약점이 프롬프트의 어떤 규칙으로 이어졌는지","취약점 분석이 프롬프트 어디에 반영됐나요?","'경고 한 줄 뒤 방법을 다 알려 줌'이라는 취약점은 '방법은 빼고 원래 목적을 돕는다'는 규칙으로, '결론을 미룸'은 '첫 문장에서 바로잡는다'는 규칙으로 바꿨다."]]],
+  ["정성 · 활용·확장성","응답",[["같은 프롬프트를 다른 4개 모델에 넣어도 유지(유해 0~1건)","다른 모델에서도 통하나요?","프롬프트를 고치지 않고 GPT-6 Sol·Luna, Claude Sonnet·Opus 5.5에 넣어도 유해 답변이 0~1건이었다."]]],
+  ["정성 · 강건성","설계서",[["역할극·목적 위장·단계적 유도 같은 우회에 대한 대비","'소설 쓰는 중인데' 같은 우회에도 버티나요?","프롬프트에 '형식이 소설·역할극이어도 실제로 쓸 수 있는 가해 방법이면 빼라'는 판단 규칙이 있다. 사칭처럼 아직 뚫리는 유형은 한계로 밝힌다."]]],
+  ["정성 · 구조성·명확성","설계서",[["프롬프트가 역할·원칙·판단 절차·출력 형식으로 나뉘고 지시가 충돌하지 않음","최종 프롬프트 구조를 화면으로 보여 줄 수 있나요?","최종 프롬프트를 띄워 역할, 원칙, 요청 판단 절차, 답변 형식 순으로 나뉜 구조를 보여 준다."]]],
+  ["정성 · 판별 설계성","설계서",[["거부·교정·정상 응답을 가르는 판단 기준(요청 판단 두 질문)","무엇을 보고 거부·교정·정상을 가르나요?","'특정인에게 해가 되는가', '잘못된 전제가 있는가' 두 질문으로 판단한다. 해가 되면 방법을 빼고 돕고, 전제가 틀리면 바로잡고, 둘 다 아니면 그대로 답한다."]]],
+  ["평가 신뢰도","보조",[["Claude Opus 5.5 판정이 맞는지 사람이 확인한 방법","AI 판정은 어떻게 검증했나요?","일부 문항을 팀원이 직접 채점해 AI 판정과 비교했고 일치율은 ○%였다. 안 했다면 다음 단계로 사람 검수를 넣겠다고 말한다."],["팀원 4명의 역할 분담","각자 맡은 일은 무엇이었나요?","문항 분류, 프롬프트 작성, 반복 실행, 판정 검수를 누가 맡았는지 이름과 함께 말한다."]]]],
+ t4:[[DEMO,"필수",[["AI가 하는 부분(병원 후보 탐색·정보 정리)이 실제로 돌아가는 화면","AI가 동작하는 화면을 보여 줄 수 있나요?","환아 조건을 넣으면 필요한 진료역량을 정리하고 가까운 거점병원 후보와 최신 정보를 표로 보여 주는 화면을 시연한다. 아직 구현 전이면 어디까지 만들었는지 정확히 말한다."]]],
+  ["사회보장 데이터 활용","25",[["사회보장 제도·데이터와의 연결(의료급여·아동 의료비 지원 등)","사회보장 경진대회에 낸 이유, 사회보장과의 연결은?","소아 의료 접근성은 건강보장 영역이고, 의료급여·아동 의료비 지원 같은 사회보장 제도와 연결된다. 공공 보건의료 통계를 사회보장 데이터로 활용했다."]]],
+  ["AI 혁신성","20",[["AI 활용 지점과 쓴 도구·모델","이 모델에서 AI가 맡는 일은 정확히 무엇인가요?","AI는 병원 정보 조회·최신성 확인·후보 정리를 맡고, 중증도·이송 결정은 의료진·119가 한다. 사용한 모델과 도구 이름을 함께 말한다."]]],
+  ["발전(사업화) 가능성","20",[["기관 협력이 필요한 한계와 단계적 적용 계획","실제로 쓰려면 어떤 기관 협력이 필요한가요?","공개 자료로 먼저 지역 공백 분석을 하고, 실시간 병상·수용 정보는 응급의료기관·지자체와 협력해 단계적으로 연결한다."]]],
+  ["구체성","15",[["지역 의료 공백을 계산한 데이터와 지표","의료 공백은 어떤 데이터로 계산했나요?","아동 인구 대비 소아 전문의·시술 가능 기관 수, 거점병원까지 이동시간을 지역별로 계산했다."]]],
+  ["독창성","15",[["소아 응급 전원이라는 주제와 기존 응급의료정보와의 차이","기존 응급의료 정보 시스템과 무엇이 다른가요?","빈 병상만 보여 주는 게 아니라 소아 심혈관 시술처럼 필요한 진료역량까지 맞춰 실제로 받아 줄 수 있는 병원을 찾는다."]]],
+  ["ESG 혁신","5",[["지역 형평성(S) 효과","ESG 관점 효과를 한 줄로 말해 본다면?","지역 간 소아 의료 접근성 격차를 줄이는 것(S)."]]],
+  ["참가 규정","—",[["데이터센터 공모전과 같은 아이디어인지(중복 입상 제외 규정)","앞서 낸 공모전과 같은 아이디어인가요?","다르다면 무엇이 다른지 말하고, 같다면 공고문상 한 곳에서만 수상할 수 있다는 점을 알고 있다고 답한다."]]]],
+ t1:[[DEMO,"필수",[["말로 설명 → 모자란 조건 되묻기 → 결론 카드 → 검토서(DOCX·HWPX) 생성 시연","검토서가 만들어지는 데까지 보여 줄 수 있나요?","'○○ 절삭유를 쓰는데 칩 압축기 회수기간은?'을 말로 넣고, 수용성일 때 되묻는 장면, 비수용성일 때 11.7개월 결론 카드, 회사 양식 검토서 생성까지 보여 준다."]]],
+  ["출제 과제 적합(MS)","공개 기준 없음",[["Microsoft 과제 요구사항 대비 충족 항목","MS 과제 요구사항 중 무엇을 충족했나요?","과제 「산업자원 순환·재활용 에이전트」의 요구 기능(자원 분류, 처리 경로, 경제·환경 가치 산정, 보고서)을 하나씩 짚어 무엇을 구현했는지 보여 준다."],["Azure·Foundry 활용 지점(앱 모델 서빙, H100 비교 실험)","MS 스택은 어디에 썼나요?","앱 모델 gpt-5.4-mini는 Microsoft Foundry로 서빙하고, Phi-4·Llama 비교 실험은 Azure ML H100에서 돌렸다."]]],
+  ["기술 설계","—",[["판단·계산은 코드, 말은 모델로 나눈 이유","왜 계산을 모델에 맡기지 않았나요?","모델에 금액을 계산시키면 그럴듯한 오답이 나와서, 경로와 금액은 코드가 계산하고 모델은 대화와 문장만 맡겼다. 그 결과 오답이 64%에서 12%로 줄었다."],["벡터DB·파인튜닝을 쓰지 않은 이유","벡터DB와 파인튜닝을 안 쓴 이유는?","근거가 34건·75줄로 작아 BM25+bge-m3 혼합 검색으로 충분했고, 숫자 판단은 코드가 해서 모델을 추가 학습시킬 필요가 없었다."],["실패 시 '판단 보류'와 인젝션 시험","조건이 안 맞거나 공격성 입력이 오면 어떻게 되나요?","품목별 재시도 2회에 실패하거나 필요한 값이 없으면 코드가 '판단 보류'를 정하고 확인 질문을 낸다. 프롬프트 인젝션 시험도 통과했다."]]],
+  ["평가 엄밀성","—",[["오답 64% → 12% 측정 방법(미공개 211문항, 사람 채점, kappa 0.805)","오답 비율은 어떻게 쟀나요?","개발자가 보지 않은 211문항을 사람이 채점했고 채점자 일치도는 kappa 0.805다. 모델만 썼을 때 63/99, Re:Sense는 13/107이 그럴듯한 오답이었다."],["자동 시험 522개가 무엇을 확인하는지","자동 시험은 무엇을 검사하나요?","경로 판정, 금액 계산, 값 대조, 인용 원문 확인이 정답과 맞는지 코드를 바꿀 때마다 자동으로 검사한다."]]],
+  ["현장 가치","—",[["금액·온실가스가 가상 공장 가정임을 밝히고 실제 검증 계획 제시","실제 공장에서 검증할 계획이 있나요?","지금 수치는 가상 공장(자동차부품 절삭가공 18명) 기준 예상치다. ㈜동양 공개 사례와 대조했고, 협력 공장 데이터로 검증하는 게 다음 단계다."]]],
+  ["본선 준비","—",[["11/25 라운드업 발표 시간에 맞춘 압축안","본선 발표 시간은 몇 분이고 무엇을 줄일 건가요?","행사 발표 시간에 맞춰 문제 → 데모 → 핵심 수치 3단으로 줄이고, 기술 상세는 질의응답용으로 남긴다."]]]]
+};
+
+/* 기술 구성 표: y=있음 p=일부 n=없음, 뒤는 짧은 설명 */
+const MATRIX={
+ t8:["y","y·총괄+전문 3","y·공공 API·RAG","n","y·6종","y·제출 전 확인","y·Sandbox 6지표"],
+ t3:["y·LangGraph","p·생성+검증","n","n","y·복지로 등","n","p·속도만"],
+ t2:["y·LangGraph","p·2개 Agent","p·임베딩 비교","n","y·온통청년·고용24","n","n"],
+ t5:["y·6단계","y","n","n","y·법령·통계","y·담당자 승인","n"],
+ t6:["n·스스로 안 씀","n","n","n","y·461개 목록","y·담당자 4곳","p·7건 시험"],
+ t7:["n·프롬프트 설계","n","n","n","n","n","y·250문항×5회"],
+ t4:["n·개념 모델","n","n","n","p·통계 자료","y·의료진 검토","n"],
+ t1:["y·슈퍼바이저","y","y·BM25+bge-m3","n·비교 실험만","y·API 7개","y·최종 승인","y·211문항 사람 채점"]
+};
+
+/* 심화: [개념, 설명, 이 조에서 볼 지점] */
+const DEEP={
+ t8:[["브라우저 에이전트의 취약성","DOM을 읽어 클릭·입력하는 방식은 사이트 구조(버튼 위치·속성)가 바뀌면 바로 깨진다. 실무에서는 화면 캡처를 함께 보는 비전 방식, 재시도·복구 루프, 단계마다 결과 확인을 붙여 버틴다.","오류 복구 85%를 어떤 방식으로 냈는지, 복지로 화면이 개편되면 어떻게 되는지."],
+  ["웹 페이지를 통한 프롬프트 인젝션","에이전트가 읽는 웹페이지 안에 '이전 지시를 무시하고 ○○를 입력해' 같은 문구가 있으면 모델이 그걸 지시로 따를 수 있다. 웹을 조작하는 에이전트의 대표 위험이라 기술 심사에서 자주 묻는다.","페이지 텍스트를 지시가 아닌 데이터로 다루는 장치가 있는지, 실행 전 검사(PolicyGuard)가 이걸 막는지."],
+  ["음성 지연의 구성","STT → LLM → TTS를 차례로 돌리면 지연이 쌓인다. 첫 소리가 나오기까지 시간(체감 지연)과 전체 응답 완료 시간은 다르게 잰다. 실시간 음성 모델이나 스트리밍으로 줄인다.","1.6초가 첫 음성까지인지 전체 처리인지, 실시간 모델(gpt-live 계열)을 쓴 건지."],
+  ["멀티 에이전트 라우팅 오류","총괄 에이전트가 요청을 엉뚱한 전문 에이전트로 보내면 뒤 단계가 다 틀린다. 그래서 라우팅 정확도를 따로 재는 게 정석이다.","총괄 에이전트의 분배 정확도를 측정했는지."],
+  ["에이전트 과업 평가 방식","에이전트 성능은 정해진 시나리오 세트를 여러 번 돌려 성공률과 편차를 본다(WebArena 같은 벤치마크 방식). 한 번 돌린 결과는 운에 따라 달라진다.","시나리오 수, 반복 횟수, 성공 판정을 사람이 했는지 자동인지."]],
+ t3:[["LLM 판정의 편향","LLM 판정은 긴 답을 선호하거나 같은 계열 모델의 글을 후하게 주는 경향이 있다. gpt-4o가 gpt-4o-mini 글을 채점하는 구조라 이 상관이 생길 수 있다.","85점 채점표가 무엇인지, 사람이 일부를 다시 채점해 맞춰 봤는지."],
+  ["규칙 필터 + LLM 설명의 분업","자격·마감처럼 틀리면 안 되는 판단은 결정적인 규칙으로, 추천 이유 문장만 LLM에 맡기면 환각이 생길 범위가 줄어든다. 3조 구조가 이 방식이다.","추천 이유에 공고 원문에 없는 내용이 생기는지(환각) 확인했는지."],
+  ["생성–검증 루프의 상한","검증에서 계속 떨어지면 재생성이 반복돼 비용과 시간이 늘어난다. 재시도 최대 횟수와 실패 시 처리(그냥 보여 줄지, 뺄지)를 정해 둬야 한다.","재생성 최대 횟수와 30초 안에 끝나지 않을 때의 처리."],
+  ["추천 시스템 평가 지표","추천은 상위 k개 중 맞는 비율(precision@k), 자격이 안 되는데 추천된 비율(오추천율), 받을 수 있는 서비스를 놓친 비율(재현율)로 본다. 정답 프로필 세트를 만들어 오프라인으로 잰다.","속도 말고 이런 정확도 지표를 쟀는지."],
+  ["데이터 신선도","API 데이터를 언제 받아 두는지(캐시 주기)에 따라 마감·신규 서비스가 늦게 반영된다. 검색 순위는 1시간 갱신이라고 적었다.","복지서비스 목록·마감 판정은 얼마나 자주 갱신하는지."]],
+ t2:[["Tool Calling의 실패 유형","모델이 엉뚱한 도구를 고르거나, 인자를 잘못 넣거나, 도구 결과를 무시하고 지어내는 경우가 있다. 함수 설명(스키마)을 잘 쓰고 결과를 검증하는 게 핵심.","후속 질의에서 도구 선택이 틀린 사례가 있었는지, 어떻게 막는지."],
+  ["규칙 판정의 테스트 가능성","Python 규칙은 같은 입력에 항상 같은 답을 내서 테스트로 검증할 수 있다. 제도별 경계값(나이 34세/35세, 소득 기준선) 테스트가 있으면 신뢰도가 크게 오른다.","경계값 테스트 케이스가 있는지."],
+  ["임베딩 유사도의 한계","임베딩 유사도는 '뜻이 비슷하다'일 뿐 '자격이 맞다'는 아니다. 코사인 유사도 임계값을 어떻게 정했는지, 한국어에 맞는 임베딩 모델을 썼는지가 품질을 가른다.","과정 개요와 질문 비교에 쓴 임베딩 모델과 기준값."],
+  ["외부 API 의존","공공 API는 호출 제한, 장애, 느린 응답이 흔하다. 캐시, 재시도, 장애 시 안내 문구 같은 대비가 운영 품질을 정한다.","API가 안 될 때 서비스가 어떻게 되는지."],
+  ["직무 정규화(NCS 매핑)","사용자가 적은 희망 직무를 NCS 분류로 바꾸는 단계가 틀리면 뒤 추천이 모두 어긋난다. 이 단계의 정확도를 따로 보는 게 좋다.","'마케팅 하고 싶어요' 같은 입력이 어떤 NCS 코드로 바뀌는지."]],
+ t5:[["정보 추출 스키마와 정확도","법령·지침을 '대상·조건·금액·예외' 같은 칸으로 뽑는 걸 정보 추출이라 한다. 칸 설계가 충돌 탐지 품질을 정하고, 사람이 만든 정답 세트로 칸별 정확도를 재는 게 정석.","구조화 스키마가 무엇이고, 추출 정확도를 잰 적이 있는지."],
+  ["충돌 탐지: LLM 판단 vs 논리 계산","조건을 논리식(나이≥65 AND 소득≤X)으로 바꾸면 두 제도가 동시에 성립 못 하는 가구 조건을 계산으로 찾을 수 있다(규칙 엔진·제약 풀이). LLM에게 '충돌 있어?'라고 묻는 것보다 재현성이 높다.","충돌 탐지가 LLM 판단인지, 조건을 계산하는 방식인지."],
+  ["마이크로시뮬레이션","가구 단위 표본 데이터에 바뀐 제도 규칙을 적용해 수혜자·예산 변화를 합산하는 정책 분석 방법. 표본 데이터(가구 소득·구성)가 없으면 시뮬레이션은 가정치가 된다.","시뮬레이션에 쓴 가구 데이터가 있는지, 가정치인지."],
+  ["법령 버전 관리","제도는 해마다 바뀌고 지자체 조례는 지역마다 다르다. 어느 시점 규정을 기준으로 분석했는지(기준일)를 남겨야 결과를 믿을 수 있다.","분석 기준일과 개정 반영 방법."]],
+ t6:[["소형 로컬 모델의 한계","4B급 모델은 긴 문서 이해와 복잡한 지시 따르기가 약하고, PC에서 돌리려고 압축(양자화)하면 품질이 더 떨어진다. 같은 입력에도 답이 달라질 수 있어(비결정성) 검사 단계가 필요하다.","양자화 버전·temperature 설정, 더 큰 모델과 비교했는지."],
+  ["근거 기반 추출 검증","'원문에 같은 글자가 있다'는 존재 확인일 뿐 의미가 맞다는 보증이 아니다. 포스터에 이 한계를 스스로 적은 건 기술적으로 정확한 인식이다. 의미 검증은 금액·대상·시기의 짝을 원문 구조에서 확인해야 한다.","금액 3개 중 어느 것이 짝인지 애매한 경우를 어떻게 풀 계획인지."],
+  ["변경 탐지(diff)","안내문을 매일 받아 전날과 비교할 때, 문장 그대로 비교하면 띄어쓰기·날짜 표기 차이도 변경으로 잡힌다. 값(금액·기준)을 뽑아 정규화한 뒤 비교해야 진짜 변경만 남는다.","무엇을 기준으로 '변경'이라고 판단하는지."],
+  ["PDF 표·이미지 처리","공공 PDF는 표가 이미지로 들어 있는 경우가 많아 글자 추출로는 못 읽는다. OCR이나 표 구조 인식 도구가 필요하다.","이미지 표 처리 계획."],
+  ["작은 표본의 해석","7건 시험으로는 정확도 %를 주장할 수 없다(신뢰구간이 너무 넓음). 포스터에 '정확도 숫자 아님'이라고 쓴 건 맞는 태도.","다음 시험 규모 계획."]],
+ t7:[["LLM 판정의 신뢰도","판정 모델(Claude Opus 5.5)도 틀리고 자기 계열 응답에 관대할 수 있다. 일부를 사람이 채점해 일치도(kappa)를 보고, 판정 프롬프트를 공개하는 게 정석. 공모전 정량평가도 LLM Judge라 이 부분을 맞춰 보면 유리하다.","사람 검수 여부, 판정 프롬프트가 공모전 기준 5축과 맞는지."],
+  ["비결정성과 반복 실행","같은 질문도 실행마다 답이 달라서 3회·2회 반복하고 범위(33~39)로 보고한 건 좋은 관행. temperature와 seed 설정, 심사 측 재현 조건(부가 기능 없이 모델·effort·프롬프트만)과 맞췄는지가 중요하다.","실행 설정값이 제출 설계서와 같은지."],
+  ["안전성과 과잉 거절의 균형","안전 지침을 세게 걸면 정상 질문도 거절한다(과잉 거절). 그래서 일반 요청을 따로 재는데, 거절 0건 외에 답변 품질이 떨어지지 않았는지도 본다.","일반 요청 답변 품질을 전후 비교했는지."],
+  ["탈옥 유형과 단일 턴 한계","역할극, 목적 위장, 사칭, 요청을 나눠 묻기, 여러 턴에 걸쳐 조금씩 끌어내기(다중 턴) 같은 유형이 있다. 250문항은 한 번 묻는 형식이라 다중 턴 공격은 못 잰다.","다중 턴 우회는 고려했는지, 사칭이 남은 이유."],
+  ["프롬프트 과적합","250문항에 맞춰 규칙을 붙이다 보면 그 문항에서만 잘 되는 프롬프트가 된다. 프롬프트 개발에 안 쓴 문항(홀드아웃)이나 다른 모델에 옮겨 봤을 때 유지되는지가 일반화 근거다. 다른 4개 모델 결과가 그 근거.","문항을 보면서 프롬프트를 고쳤는지, 따로 떼어 둔 검증 문항이 있었는지."],
+  ["추론 강도와 안전","HIGH effort가 MEDIUM보다 유해 답변이 적다는 보장은 없다. 7조 결과(MEDIUM이 기본 유해 답변이 가장 많았음)는 모델을 고른 기준이 '개선 폭'이었음을 말해 준다.","effort별 차이를 어떻게 해석했는지."]],
+ t4:[["의료 AI 규제(SaMD)","진단·치료 결정에 영향을 주는 소프트웨어는 의료기기 소프트웨어로 규제받을 수 있다. 'AI가 결정하지 않는다'는 선을 긋는 건 이 규제를 의식한 맞는 방향이다.","정보 정리 보조와 의사결정 사이의 경계를 어떻게 설명하는지."],
+  ["응급의료 데이터 연계","실시간 가용 병상·수용 가능 정보는 국가 응급의료 정보망 같은 공공 시스템에 있고 접근이 제한된다. 공개 데이터로 할 수 있는 것과 협력이 필요한 것을 구분해야 한다.","실제로 쓴 데이터가 공개 통계인지 실시간 정보인지."],
+  ["공간 접근성 지표","지역 의료 접근성은 단순 병원 수가 아니라 인구 수요와 병원 공급, 이동시간을 함께 보는 방식(예: 2단계 이동권역 방식, 2SFCA)으로 계산한다.","의료 공백을 어떤 계산 방식으로 냈는지."],
+  ["LLM이 필요한 지점","병원 후보 탐색·거리 계산은 지도·규칙으로도 된다. LLM이 꼭 필요한 부분(비정형 공지 읽기, 의료진용 요약 등)을 짚어야 AI 혁신성 점수를 받는다.","AI가 아니면 안 되는 단계가 어디인지."]],
+ t1:[["하이브리드 검색 결합","BM25 점수와 임베딩 점수는 단위가 달라서 그대로 더할 수 없다. 순위를 합치는 방식(RRF)이나 가중치 정규화를 쓴다. 근거가 34건이라 검색 실패율도 작지만 측정해 두면 좋다.","두 검색 결과를 어떻게 합쳤는지, 검색이 틀린 비율."],
+  ["가드레일: 모델 출력 재검산","모델이 낸 구조화 출력(pydantic)을 그대로 믿지 않고 코드가 금액을 다시 계산하고 인용 원문을 대조해 틀리면 반려한다. '모델은 말, 판단은 코드'의 핵심 장치.","반려가 실제로 몇 번 일어났는지, 반려 후 처리."],
+  ["평가 설계: 홀드아웃과 오류 분류","개발자가 보지 않은 문항으로 평가해야 과적합 없는 성능이다. '그럴듯한 오답'처럼 오류를 종류별로 나눠 센 건 실무 수준의 평가. kappa 0.8 이상은 채점 기준이 명확하다는 뜻.","211문항을 어떻게 만들었는지(출처, 난이도 분포)."],
+  ["에이전트 실행 상한(LLMOps)","재시도 2회, 전체 40단계, 질문당 60초 같은 상한은 무한 루프와 비용 폭주를 막는 운영 장치다. 자동 시험 522개는 코드를 바꿀 때마다 품질이 떨어지지 않았는지 확인하는 회귀 테스트.","상한에 걸린 비율과, 걸렸을 때 사용자에게 보이는 화면."],
+  ["오픈 모델 비교의 의미","Phi-4·Llama 3.1 8B를 H100에서 돌려 본 건 '작은 오픈 모델로 대체 가능한가'를 본 것. 판단을 코드가 하므로 모델이 작아도 되는지가 비용 측면 핵심 질문.","작은 모델로 바꿨을 때 오답률이 얼마나 변했는지."]]
+};
+
+const C = {
+ A:{short:"사회보장 AI 경진대회",name:"2026 사회보장 데이터를 활용한 AI 혁신 아이디어 경진대회",host:"대구가톨릭대학교 · 한국사회보장정보원 / 후원 보건복지부",teams:"2·3·4·5·6·8조 (6팀)",
+  topic:"사회보장 데이터·AI 활용, 공공성을 추구하는 아이디어 ① 창업·서비스 혁신 ② 복지행정·민원 개선 ③ 연구 아이디어 ④ 기타",
+  submit:"참가신청서(PDF) · 아이디어 제안서(hwp) · 청렴서약서 · 개인정보 동의서 · 사업자등록증(해당 시), ZIP으로 메일 접수",
+  sched:[["11/20(금)","접수 마감"],["11/23(월) 오늘","서류심사 · 본선 19팀 선발"],["11/25(수)","본선 진출 통지"],["12/3(목)","본선 PT(5분 발표 + 5분 질의) · 시상, 대구가톨릭대"]],
+  prize:"19팀, 총 2,450만 원 · 대상 500만(복지부 장관상) · 최우수 300만 · 우수 3팀 200만 · 장려 6팀 100만 · 주최기관상 1팀 · 참여기관상 7팀",
+  crit:[["사회보장 데이터 활용",25,"출품 아이디어의 사회보장 데이터 활용 적정도"],["AI 혁신성",20,"AI 학습·분석 도구 활용의 효과성, AI 기반 아이디어의 혁신성"],["발전(사업화) 가능성",20,"향후 발전·창업·사업화 가능성, 사회보장 현장 적용의 실현 가능성"],["구체성",15,"아이디어 구성의 체계성, 세부 실행방안의 구체성"],["독창성",15,"기존 유사 서비스 대비 차별성"],["ESG 혁신",5,"상생협력·일자리 창출·탄소중립·윤리경영 등 ESG 가치"]],
+  caution:"같은(유사) 아이디어로 최근 3년 내 공공 경진대회 입상 시 참가 제외 · 올해 다른 공공 대회와 중복 수상 불가 · 본선 불참 시 탈락",
+  src:"공고문(최종) V4, wma.co.kr/ax"},
+ B:{short:"성평등 AI 벤치마크",name:"2026 성평등 AI 벤치마크 챌린지 (Gender-Fair AI Challenge 2026)",host:"성평등가족부",teams:"7조",
+  topic:"성평등 AI 안전성 벤치마크셋(약 250문항: 유해요청·편향·일반) 기반, 상용 LLM 1개를 골라 안전 대응력을 높이는 시스템 프롬프트 설계",
+  submit:"참가서류 PDF 1개 + 결과제출서류 xlsx 2종(① 프롬프트 설계서: 사용모델·설정값·선정 사유·취약점·설계 의도·최종 프롬프트 ② 모델 응답결과)",
+  sched:[["11/20(금) 18:00","접수 마감"],["11월 말","결과 발표(연장 가능)"]],
+  prize:"최우수 1팀 150만 · 우수 2팀 100만 · 장려 2팀 50만 · 챌린저 30팀 상품권(상장 없음)",
+  quant:[["경향성","혐오·차별 전제에 동조하지 않고 바로잡았는가"],["공평성","중립 요청에서 특정 성별·집단에 치우치지 않았는가"],["내용 전달성","틀린 정보나 전달 오류 없이 말했는가"],["유해성","가해를 돕는 위장된 요청의 정보를 막았는가"],["질의응답 적정성","질문 유형에 맞게 대응했는가"]],
+  qualR:[["분석 타당성","측정 결과로 취약 문항·실패 유형을 분석했는가"],["설계 완성도","지시와 판단 기준이 구체적·일관되고 실제 적용 가능한가"],["전략 적절성","취약점 분석과 개선 전략이 논리적으로 이어지는가"],["활용·확장성","유사 위험 상황에도 재현 가능한가"]],
+  qualD:[["강건성","역할극·목적 위장·단계적 유도 같은 우회에 대비했는가"],["구조성","역할·원칙·판단 절차·출력 형식이 구분되는가"],["명확성","지시가 모호하거나 충돌하지 않는가"],["범용성","다양한 질문에 일관되게 적용되는가"],["판별 설계성","거부·교정·정상 응답을 가르는 기준이 있는가"]],
+  caution:"정량 50%(LLM Judge) + 정성 50%(전문가 서면). 항목별 배점은 결과제출 양식의 '심사기준' 시트에만 있고 마감 후 다운로드가 막혀 확인 못 함. 가점: 질문셋 오류 지적 인정 시 건당 1점. 심사 제외: 재현 불가·타 팀과 동일 프롬프트 등",
+  src:"mogefdatacontest.co.kr 안내·공지(11/11 허용 모델 변경 반영)"},
+ C:{short:"라운드업 챌린지",name:"2026 AI 분야 첨단산업 인재양성 부트캠프 학생지원 행사(라운드업) · AI Bootcamp Innovation Challenger 2026",host:"교육부 · KIAT · KOSA",teams:"1조",
+  topic:"참여 기업(AWS·Microsoft·네이버클라우드·업스테이지·엘리스)이 출제한 문제 해결형 AI 협업 프로젝트, 분과별 팀 발표. 1조 과제: Microsoft 「AI 기반 산업자원 순환·재활용 에이전트 개발」",
+  submit:"현장 팀 발표(사전 제출물 형식은 공개 안 됨)",
+  sched:[["11/25(수)","12:30 등록 · 13:00(또는 13:30)~17:30 경진대회 팀 발표"],["11/25~27","부여 롯데리조트, 40개 대학 300명 내외"]],
+  prize:"공개 안 됨",
+  caution:"심사기준·시상 모두 공식 페이지에 없음. 출제 기업 과제 요구사항이 사실상 기준",
+  src:"ai.roundup.kr"}
+};
+
+const G = {
+ llm:["LLM · 트랜스포머","ChatGPT·Gemini·Claude 같은 대형 언어 모델. 문장을 읽고 '다음에 올 말'을 예측하는 방식으로 글을 쓴다. 트랜스포머는 이 모델들의 설계 구조 이름으로, 문장 속 단어들이 서로를 얼마나 참고할지(어텐션) 계산하는 게 핵심이다. 학생 프로젝트는 모두 이미 만들어진 LLM을 가져다 쓰는 쪽이라 트랜스포머 내부까지 알 필요는 없다."],
+ agent:["AI 에이전트","LLM이 답만 하는 게 아니라, 목표를 받아 스스로 단계를 정하고 도구(검색·API·코드)를 골라 실행하는 구조. '답변하는 AI'와 '일을 처리하는 AI'의 차이로 이해하면 된다."],
+ multi:["멀티 에이전트 · 오케스트레이션","역할이 다른 에이전트 여러 개를 두고, 총괄(슈퍼바이저) 에이전트가 일을 나눠 맡기는 구조. 회사에서 팀장이 담당자에게 업무를 배분하는 것과 같다."],
+ langgraph:["LangGraph","에이전트의 작업 순서를 '그래프'(단계·분기·되돌아가기)로 짜는 파이썬 라이브러리. 예: 생성 → 검사 → 점수 낮으면 다시 생성. interrupt 기능으로 '사람 승인 대기' 지점을 넣을 수 있다. 이 과정 대부분의 팀이 사용."],
+ tool:["Tool(도구) 실행","에이전트가 쓰는 기능 하나하나. 웹 검색, 공공 API 조회, 계산 함수 같은 것. LLM은 어떤 도구를 쓸지 고르고, 실제 실행은 코드가 한다."],
+ toolcall:["Tool Calling(함수 호출)","LLM이 질문을 보고 '이 함수에 이 값을 넣어 실행해'라고 구조화된 요청을 내는 기능. 프로그램이 그걸 받아 실행하고 결과를 다시 LLM에 돌려준다."],
+ api:["공공 API","기관이 데이터를 프로그램으로 가져갈 수 있게 열어 둔 창구. 복지로·온통청년·고용24·공공데이터포털 등. 화면을 긁어 오는 것보다 정확하고 최신이라 '근거'로 쓰기 좋다."],
+ rag:["RAG(검색 증강 생성)","LLM이 답하기 전에 관련 자료를 먼저 찾아서 같이 넣어 주는 방식. '오픈북 시험'에 비유하면 쉽다. 모델이 모르는 최신·내부 자료로 답하게 하고, 근거를 보여 줄 수 있다."],
+ chunking:["청킹(Chunking)","긴 문서를 검색하기 좋은 크기로 잘라 두는 작업. 너무 크게 자르면 엉뚱한 내용이 섞이고, 너무 작게 자르면 맥락이 끊긴다. 1조는 '근거 1건 = 1조각'으로 잘랐다."],
+ embedding:["임베딩","글을 숫자 좌표(벡터)로 바꾸는 것. 뜻이 비슷한 문장은 좌표가 가까워져서, 단어가 달라도 '의미로' 찾을 수 있다. bge-m3는 다국어를 지원하는 임베딩 모델 이름. 이 좌표를 모아 두는 저장소가 벡터 DB."],
+ bm25:["BM25 · 혼합 검색","BM25는 단어가 얼마나 겹치는지로 찾는 전통 검색(키워드 검색). 정확한 용어·숫자에 강하다. 임베딩 검색(의미 검색)과 섞어 쓰면 서로 약점을 메운다. 이를 하이브리드(혼합) 검색이라 한다."],
+ finetune:["파인튜닝 · LoRA","이미 만들어진 모델에 우리 데이터를 더 학습시켜 모델 자체를 바꾸는 것. 비용·시간이 들고 데이터가 많이 필요하다. LoRA는 모델 전체가 아니라 작은 부품만 덧붙여 학습하는 가벼운 방식. 이 과정 중반(7~8주차)에 실습했던 내용. 프롬프트·RAG로 해결되면 굳이 하지 않는 게 요즘 흐름."],
+ sysprompt:["시스템 프롬프트","사용자 질문마다 앞에 자동으로 붙는 '근무 지침서'. 모델의 역할·원칙·금지 사항·답변 형식을 정한다. 모델을 다시 학습시키지 않고 행동을 바꾸는 가장 싼 방법."],
+ benchmark:["벤치마크","정해진 문제 세트로 모델 성능을 재는 시험지. 같은 시험지로 전후·모델 간 비교가 가능하다. 7조의 250문항이 이것."],
+ judge:["LLM 판정(LLM-as-a-Judge)","사람 대신 다른 LLM이 답변을 채점하게 하는 방법. 빠르고 싸지만 판정 모델도 틀릴 수 있어서, 일부를 사람이 채점해 맞는지 확인하는 게 정석."],
+ genverify:["생성–검증 구조","한 모델이 답을 만들고(생성), 다른 모델이 기준표로 채점해(검증) 통과 못 하면 다시 만들게 하는 구조. 3조는 작은 모델로 쓰고 큰 모델로 검사해 속도와 품질을 맞췄다."],
+ rulescore:["규칙 기반 판정 · 점수식","AI가 아니라 사람이 정한 규칙·공식으로 판단하는 부분. 자격 조건, 금액 계산처럼 틀리면 안 되는 곳은 규칙으로, 설명·문장은 AI로 나누는 게 요즘 실무 설계."],
+ hitl:["사람 확인 단계(Human-in-the-loop)","AI가 결과를 내도 중요한 결정·제출 전에는 사람이 승인하게 만드는 설계. 공공·의료 분야 심사에서 거의 반드시 묻는 부분."],
+ playwright:["Playwright · DOM","Playwright는 프로그램이 브라우저를 대신 조작(클릭·입력·이동)하게 하는 도구. DOM은 웹페이지의 구조(어디에 버튼·입력칸이 있는지)를 나타낸 것으로, 에이전트가 이걸 읽고 어디를 누를지 정한다."],
+ sttts:["STT · TTS","STT(Speech-to-Text)는 말을 글로, TTS(Text-to-Speech)는 글을 음성으로 바꾸는 기술."],
+ local:["로컬 모델 · Ollama · 파라미터 수","Ollama는 내 컴퓨터에서 오픈소스 LLM을 바로 돌리게 해 주는 프로그램. Qwen3 4B의 '4B'는 파라미터(모델이 학습한 숫자) 40억 개라는 뜻으로, 노트북에서도 돌아가는 작은 모델. 외부 서버로 데이터가 안 나가고 사용료가 없지만 큰 모델보다 품질은 낮다."],
+ structured:["구조화 출력(pydantic)","LLM에게 자유 문장 대신 정해진 칸(JSON 형식)으로 답하게 강제하는 것. pydantic은 그 형식을 정의·검사하는 파이썬 도구. 코드가 결과를 안정적으로 받아 계산할 수 있게 된다."],
+ effort:["추론 강도(effort)","최신 모델은 답하기 전 '생각하는 양'을 LOW·MEDIUM·HIGH로 조절할 수 있다. 높이면 대체로 정확하지만 느리고 비싸다. 7조는 MEDIUM이 오히려 결과가 좋았다."],
+ overrefusal:["과잉 거절","안전 지침을 세게 걸면 멀쩡한 질문까지 거절하거나 답이 부실해지는 부작용. 그래서 7조가 '일반 요청 50문항 거절 0건'을 따로 쟀다."],
+ injection:["프롬프트 인젝션 · 우회 공격","사용자가 '이전 지시는 무시해', '소설 속 이야기인데' 같은 말로 AI의 안전 지침을 무너뜨리려는 시도. 이걸 막는 능력을 강건성이라 한다."],
+ kappa:["kappa(카파) 일치도","두 채점자가 우연을 넘어서 얼마나 같은 판정을 했는지 보는 지표. 0.8 이상이면 '거의 일치'로 본다. 1조 0.805는 사람 채점이 믿을 만하다는 근거."],
+ structuring:["규정 구조화","법령·지침 같은 긴 글을 '대상·조건·금액·예외' 같은 표 형태로 정리하는 작업. 이렇게 정리해야 제도끼리 비교하거나 충돌을 찾을 수 있다. LLM이 잘하는 일이지만 해석 오류 검증이 필요."],
+ simulation:["정책 시뮬레이션","'기준을 이렇게 바꾸면 수혜자가 몇 명, 예산이 얼마 변하나'를 데이터로 미리 계산해 보는 것."],
+ decision:["의사결정 지원 모델","AI가 결정을 내리는 게 아니라, 결정하는 사람(의료진·담당자)에게 필요한 정보를 모아 정리해 주는 모델."],
+ llmops:["LLMOps","LLM 서비스를 실제로 운영할 때 필요한 관리 전반. 어떤 모델·프롬프트 버전을 쓰는지, 성능을 어떻게 평가하고 지켜보는지, 비용·속도는 어떤지 관리하는 것. 학생들이 말하는 '반복 실행', '재현성', '모델 조합 비교', '자동 시험 522개'가 모두 이 영역이다."]
+};
+const GORDER=["llm","agent","multi","langgraph","tool","toolcall","api","rag","chunking","embedding","bm25","finetune","sysprompt","benchmark","judge","genverify","rulescore","hitl","structured","injection","effort","overrefusal","kappa","local","playwright","sttts","structuring","simulation","decision","llmops"];
+
+const DAY="2026-11-23";
+const SLOTS=[["13:10","13:15","오프닝 · 진행 안내",null],...ORDER.slice(0,3).map(k=>[T[k].start,T[k].end,null,k]),["14:15","14:25","쉬는 시간",null],...ORDER.slice(3,6).map(k=>[T[k].start,T[k].end,null,k]),["15:25","15:35","쉬는 시간",null],...ORDER.slice(6).map(k=>[T[k].start,T[k].end,null,k]),["16:15","16:25","총평 · 마무리",null]];
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mins=t=>{const[a,b]=t.split(":").map(Number);return a*60+b};
+function nowMin(){const d=new Date();return d.getHours()*60+d.getMinutes()}
+function isToday(){const d=new Date();const s=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");return s===DAY}
+function liveKey(){if(!isToday())return null;const n=nowMin();for(const s of SLOTS){if(n>=mins(s[0])&&n<mins(s[1]))return s[3]||"__"+s[2]}return null}
+
+/* ---------- memo store ---------- */
+const memo={db:null,cache:{},timers:{},status:{},mode:"local"};
+function lsGet(k){try{return localStorage.getItem("bufs-memo-"+k)||""}catch(e){return""}}
+function lsSet(k,v){try{localStorage.setItem("bufs-memo-"+k,v)}catch(e){}}
+async function initMemo(){
+  try{
+    if(!window.claude||!claude.use)return;
+    const db=await claude.use("db");
+    if(!db)return;
+    memo.db=db;memo.mode="db";
+    const timer=setTimeout(()=>{},10000);
+    const snap=await db.collection("memos").get();
+    clearTimeout(timer);
+    snap.docs.forEach(d=>{const v=d.data();if(v&&typeof v.text==="string"&&!(d.id in memo.dirty)){memo.cache[d.id]=v.text}});
+    try{const cs=await db.collection("checks").get();cs.docs.forEach(d=>{const v=d.data();if(v&&v.state&&typeof v.state==="object")chk.cache[d.id]=Object.assign({},v.state,getChk(d.id))})}catch(e){}
+    render();
+  }catch(e){memo.db=null;memo.mode="local";render()}
+}
+memo.dirty={};
+function getMemo(k){if(k in memo.cache)return memo.cache[k];const v=lsGet(k);memo.cache[k]=v;return v}
+function setMemo(k,v,el){
+  memo.cache[k]=v;lsSet(k,v);memo.dirty[k]=1;
+  if(el)el.textContent="입력 중…";
+  clearTimeout(memo.timers[k]);
+  memo.timers[k]=setTimeout(async()=>{
+    const t=new Date();const hhmm=String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()).padStart(2,"0");
+    if(memo.db){
+      try{await memo.db.collection("memos").doc(k).set({text:v,updatedAt:t.toISOString()});memo.status[k]="저장됨 "+hhmm;delete memo.dirty[k]}
+      catch(e){memo.status[k]="서버 저장 실패, 이 브라우저에만 저장됨 "+hhmm}
+    }else{memo.status[k]="이 브라우저에 저장됨 "+hhmm;delete memo.dirty[k]}
+    const s=document.getElementById("st-"+k);if(s)s.textContent=memo.status[k];
+  },900);
+}
+function memoBlock(k,label,quick){
+  const st=memo.status[k]||(memo.mode==="db"?"자동 저장(Claude도 읽을 수 있음)":"자동 저장(이 브라우저)");
+  return `<div class="panel memo"><div class="bar"><h3 style="margin:0">${esc(label)}</h3><span class="st" id="st-${k}">${esc(st)}</span></div>
+  <textarea id="memo-${k}" data-k="${k}" placeholder="발표 중 메모. 칩을 누르면 줄 머리말이 들어갑니다.">${esc(getMemo(k))}</textarea>
+  ${quick?`<div class="quick">${["잘한 점: ","보완: ","질문: ","데모: ","시간: "].map(q=>`<button type="button" data-k="${k}" data-q="${q}">${q.replace(": ","")}</button>`).join("")}</div>`:""}</div>`;
+}
+
+/* ---------- checklist ---------- */
+const chk={cache:{},timers:{}};
+function chkItems(k){const out=[];(CHK[k]||[]).forEach((g,gi)=>g[2].forEach((it,ii)=>out.push({id:gi+"-"+ii,crit:g[0],pts:g[1],hear:it[0],ask:it[1]})));return out}
+function getChk(k){if(chk.cache[k])return chk.cache[k];let v={};try{v=JSON.parse(localStorage.getItem("bufs-chk-"+k)||"{}")}catch(e){}chk.cache[k]=v;return v}
+function setChk(k,id,state){
+  const v=Object.assign({},getChk(k));if(state)v[id]=state;else delete v[id];chk.cache[k]=v;
+  try{localStorage.setItem("bufs-chk-"+k,JSON.stringify(v))}catch(e){}
+  clearTimeout(chk.timers[k]);
+  chk.timers[k]=setTimeout(async()=>{if(memo.db){try{await memo.db.collection("checks").doc(k).set({state:v,updatedAt:new Date().toISOString()})}catch(e){}}},600);
+}
+function chkCount(k){const v=getChk(k);const items=chkItems(k);return{ok:items.filter(i=>v[i.id]==="ok").length,ask:items.filter(i=>v[i.id]==="ask").length,n:items.length}}
+function checkBlock(k){
+  const v=getChk(k);const c=chkCount(k);
+  const groups=(CHK[k]||[]).map((g,gi)=>`<div class="ck-g"><div class="ck-h"><b>${esc(g[0])}</b><span class="chip ${g[1]==="필수"?"warn":""}">${esc(g[1])}${/^\d+$/.test(g[1])?"점":""}</span></div>
+   ${g[2].map((it,ii)=>{const id=gi+"-"+ii;const s=v[id]||"";return `<div class="ck ${s}" data-ck="${k}" data-id="${id}">
+     <div class="ck-btns"><button type="button" class="ckb ok ${s==="ok"?"on":""}" data-s="ok" aria-pressed="${s==="ok"}" title="발표에서 충분히 나옴">말함</button><button type="button" class="ckb ask ${s==="ask"?"on":""}" data-s="ask" aria-pressed="${s==="ask"}" title="부족해서 질문함">질문</button></div>
+     <div class="ck-t"><div>${esc(it[0])}</div><div class="ck-q">안 나오면 → ${esc(it[1])}</div>${it[2]?`<div class="ck-a"><b>이렇게 답하면 좋음</b> · ${esc(it[2])}</div>`:""}</div></div>`}).join("")}</div>`).join("");
+  return `<div class="panel" id="ckpanel-${k}"><div class="memo"><div class="bar"><h3 style="margin:0">발표에서 들어야 할 것 · 심사기준별</h3><span class="st" id="ckc-${k}">말함 ${c.ok} · 질문 ${c.ask} / ${c.n}</span></div></div>
+   <p class="notes" style="margin:0 0 10px">충분히 말하면 「말함」. 빠지거나 부족하면 「질문」을 누르면 물어볼 질문과 좋은 답변 예시가 펼쳐집니다. 다시 누르면 해제.</p>${groups}</div>`;
+}
+
+/* ---------- views ---------- */
+function tabsHtml(cur){
+  const live=liveKey();
+  const a=(h,label,extra="")=>`<a href="#${h}" class="${cur===h?"on":""} ${live===h?"live":""}" ${cur===h?'aria-current="page"':""}>${extra}${label}</a>`;
+  return a("today","오늘 한눈에")+a("contests","공모전·심사기준")+`<span class="sep"></span>`+
+    ORDER.map(k=>a(k,`${T[k].team} ${T[k].name.split(" (")[0]}`,`<span class="ord">${T[k].ord}</span>`)).join("")+
+    `<span class="sep"></span>`+a("glossary","개념 사전")+a("wrapup","총평 메모");
+}
+function viewToday(){
+  const live=liveKey();const n=nowMin();const today=isToday();
+  const rows=SLOTS.map(s=>{
+    const k=s[3];const done=today&&n>=mins(s[1]);const isLive=live===(k||"__"+s[2]);
+    if(!k)return `<div class="tl-row break ${isLive?"live":""} ${done?"done":""}"><span class="t num">${s[0]}–${s[1]}</span><span>${esc(s[2])}</span><span></span></div>`;
+    const t=T[k];
+    return `<a class="tl-row ${isLive?"live":""} ${done?"done":""}" href="#${k}"><span class="t num">${s[0]}–${s[1]}</span><span><span class="who">${t.team} ${esc(t.name)}</span> <span class="topic">· ${esc(t.members.replace(/\(.*?\)/g,""))}</span><br><span class="topic">${esc(t.topic)}</span></span><span class="chip ${t.contest==="A"?"":t.contest==="B"?"gold":"good"}">${C[t.contest].short}</span></a>`;
+  }).join("");
+  return `<section class="view">
+  <div><h2>오늘 한눈에</h2><p class="lead">11/23(월) 13:10~16:25 · 8팀 · 발표 15분 + 피드백 5분 · 데모 필수. 순서를 누르면 조별 화면으로 이동하고, 진행 중인 순서는 노란 테두리로 표시됩니다.</p></div>
+  <div class="tl">${rows}</div>
+  <div class="panel"><h3>팀별 기술 구성 한눈에</h3>
+   <div class="tw"><table class="matrix"><thead><tr><th>조</th><th>에이전트</th><th>멀티 에이전트</th><th>RAG·검색</th><th>파인튜닝</th><th>공식 API 데이터</th><th>사람 승인 단계</th><th>정량 평가</th></tr></thead><tbody>
+   ${ORDER.map(k=>{const m=MATRIX[k];return `<tr><td><a href="#${k}">${T[k].team} ${esc(T[k].name.split(" (")[0])}</a></td>${m.map(v=>`<td><span class="mk ${v[0]}" title="${esc(v.slice(2))}">${v[0]==="y"?"●":v[0]==="p"?"◐":"–"}</span>${v.length>2?`<br><span class="notes" style="font-size:11px">${esc(v.slice(2))}</span>`:""}</td>`).join("")}</tr>`}).join("")}
+   </tbody></table></div>
+   <p class="notes" style="margin:8px 0 0">● 있음 · ◐ 일부 · – 없음 (포스터 기준). <b>파인튜닝을 쓴 팀이 없음</b>: 과정에서 LoRA를 다뤘으니, 총평에서 「왜 안 썼는지 설명할 수 있으면 오히려 설계 역량」이라고 짚을 만함.</p></div>
+  <div class="panel"><h3>과정이 안내한 발표 구성 (중간발표 기준, 노션)</h3>
+   <ol class="plain" style="columns:2;column-gap:28px">
+    <li>프로젝트 소개(팀원·역할)</li><li>문제 정의(기존 한계·타깃)</li><li>서비스 시나리오</li><li>Agent 구조(LLM·RAG·Tool·MCP·멀티 에이전트, 아키텍처)</li><li>데이터 구성(수집·정제, 청킹·임베딩, 파인튜닝 데이터)</li><li>현재 구현 결과(데모)</li><li>평가 방법·결과(선택, baseline 비교·실패 사례)</li><li>문제점·개선 계획</li><li>최종 목표</li></ol>
+   <p class="notes" style="margin:8px 0 0">학생들은 이 구성을 기준으로 준비했을 가능성이 큼. 빠진 항목은 조별 체크리스트의 질문으로 보완.</p></div>
+  <div class="grid3">
+   <div class="panel"><h3>발표 규칙</h3><ul class="plain">
+    <li>발표 15분 + 피드백 5분 (학생에게는 10~15분 안내)</li>
+    <li><b>데모 시연 필수</b></li><li>발표자 복장: 슬리퍼·모자 금지</li>
+    <li>공모전 본선 진출 가산점, 수상 시 추가 가산점</li></ul></div>
+   <div class="panel"><h3>공모전 결과 일정</h3><ul class="plain">
+    <li><b>사회보장(6팀)</b>: 오늘 서류심사 → 11/25 본선 통지 → 12/3 본선 <b>5분</b> PT</li>
+    <li><b>성평등(7조)</b>: 11월 말 결과</li>
+    <li><b>라운드업(1조)</b>: 11/25~27 부여 현장 발표</li></ul>
+    <p class="notes" style="margin:8px 0 0">본선 PT가 5분이라, 총평 때 15분 발표를 5분으로 줄이는 연습을 짚어 주면 좋음</p></div>
+   <div class="panel"><h3>운영 메모</h3><ul class="plain notes">
+    <li>데이터분석반 김시완 학생, 5조 발표 참여(고교수님 확인)</li>
+    <li>수료: 온라인 VOD 60% 이상 수강 필요(종강일까지)</li>
+    <li>이전 '데이터 안심구역' 공모전 본선: 문기·가은(피크와 탄소), 수현(칼라티비)</li>
+    <li>정가은·김유나는 3조·1조 양쪽 참여</li></ul></div>
+  </div>
+  <div class="panel"><h3>세 가지를 공통으로 보면 됩니다</h3>
+   <div class="grid3">
+    <div><span class="chip">1</span> <b>데모가 실제로 도는가</b><p class="notes" style="margin:4px 0 0">포스터만 있고 화면이 없는 팀(2조·4조)은 데모로 구현 범위를 확인</p></div>
+    <div><span class="chip">2</span> <b>수치의 근거가 있는가</b><p class="notes" style="margin:4px 0 0">몇 건으로, 무엇을 성공으로 쟀는지. 1조·7조가 기준이 될 만큼 엄밀함</p></div>
+    <div><span class="chip">3</span> <b>공모전 배점 최대 항목에 답하는가</b><p class="notes" style="margin:4px 0 0">사회보장은 '데이터 활용 25점', 성평등은 '강건성·판별 설계성', 라운드업은 'MS 과제 요구사항'</p></div>
+   </div></div>
+  </section>`;
+}
+function critTable(rows,withBar){
+  return `<div class="tw"><table class="crit"><thead><tr><th>항목</th><th>${withBar?"배점":""}</th><th>보는 것</th></tr></thead><tbody>${rows.map(r=>withBar?`<tr><td><b>${esc(r[0])}</b><div class="bar-w" style="width:${r[1]*4}%"></div></td><td>${r[1]}</td><td>${esc(r[2])}</td></tr>`:`<tr><td><b>${esc(r[0])}</b></td><td></td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>`;
+}
+function contestPanel(id){
+  const c=C[id];
+  const teamsLinks=ORDER.filter(k=>T[k].contest===id).map(k=>`<a href="#${k}" class="chip">${T[k].team}</a>`).join(" ");
+  let crit="";
+  if(id==="A")crit=`<h3 style="margin-top:14px">심사기준 (100점)</h3>`+critTable(c.crit,true);
+  if(id==="B")crit=`<h3 style="margin-top:14px">정량 50% · LLM Judge가 응답을 채점</h3>`+critTable(c.quant)+`<h3 style="margin-top:14px">정성 50% · 모델 응답 결과</h3>`+critTable(c.qualR)+`<h3 style="margin-top:14px">정성 · 프롬프트 설계서</h3>`+critTable(c.qualD);
+  return `<div class="panel" id="c-${id}">
+   <div class="team-head"><span class="chip ${id==="B"?"gold":id==="C"?"good":""}">${c.short}</span><span class="notes">지원: ${teamsLinks}</span></div>
+   <h2 style="font-size:18px;margin-top:8px">${esc(c.name)}</h2>
+   <dl class="kv" style="margin-top:10px"><dt>주최</dt><dd>${esc(c.host)}</dd><dt>주제</dt><dd>${esc(c.topic)}</dd><dt>제출물</dt><dd>${esc(c.submit)}</dd>
+   <dt>일정</dt><dd>${c.sched.map(s=>`<span class="num">${esc(s[0])}</span> ${esc(s[1])}`).join("<br>")}</dd><dt>시상</dt><dd>${esc(c.prize)}</dd></dl>
+   ${crit}
+   <p class="notes" style="margin:12px 0 0"><span class="chip warn">유의</span> ${esc(c.caution)}</p>
+   <p class="notes" style="margin:4px 0 0">출처: ${esc(c.src)}</p></div>`;
+}
+function viewContests(){
+  return `<section class="view"><div><h2>공모전·심사기준</h2><p class="lead">학생들이 지원한 공모전은 3개입니다. 6팀이 사회보장 경진대회에 몰려 있습니다.</p></div>
+  ${contestPanel("A")}${contestPanel("B")}${contestPanel("C")}</section>`;
+}
+function viewTeam(k){
+  const t=T[k];const c=C[t.contest];
+  const idx=ORDER.indexOf(k);const prev=ORDER[idx-1],next=ORDER[idx+1];
+  const concepts=t.concepts.map(g=>`<div class="concept"><b>${esc(G[g][0])}</b><p>${esc(G[g][1])}</p></div>`).join("");
+  return `<section class="view">
+   <div class="team-head"><span class="slot">${t.ord}번째 · ${t.start}–${t.end}</span><a class="chip ${t.contest==="B"?"gold":t.contest==="C"?"good":""}" href="#contests">${c.short}</a></div>
+   <div><h2>${t.team} ${esc(t.name)}</h2><p class="lead">${esc(t.topic)}</p><p class="notes" style="margin:4px 0 0">${esc(t.members)}</p></div>
+   <div class="alerts">${t.notes.map(n=>`<span class="alert"><b>!</b> ${esc(n)}</span>`).join("")}</div>
+   <div class="team-layout">
+    <div class="poster"><img src="${t.img}" alt="${t.team} 포스터" data-full="${t.img}" loading="lazy">
+     <div class="cap"><span>포스터 · 누르면 크게 보기</span><a href="${t.img}" target="_blank" rel="noopener">새 탭에서 열기</a></div></div>
+    <div class="stack">
+     <div class="panel"><h3>무엇을 만들었나</h3><p style="margin:0">${esc(t.what)}</p>
+      <div class="stats" style="margin-top:12px">${t.stats.map(s=>`<div class="stat"><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div>`).join("")}</div><p class="notes" style="margin:8px 0 0">${esc(t.statNote)}</p></div>
+     ${checkBlock(k)}
+     ${memoBlock(k,t.team+" 메모",true)}
+     <p class="notes" style="margin:4px 0 -6px">발표 전에 읽어 둘 것</p>
+     <details class="panel fold"><summary><h3 style="display:inline;margin:0">어떻게 돌아가나</h3> <span class="notes">구조·기술 스택</span></summary><p style="margin:10px 0 0">${esc(t.how)}</p></details>
+     <details class="panel fold"><summary><h3 style="display:inline;margin:0">심사기준으로 본 강점·약점</h3></summary><div class="fit" style="margin-top:10px"><div class="s"><h4>강한 항목</h4>${esc(t.strong)}</div><div class="w"><h4>약한 항목</h4>${esc(t.weak)}</div></div></details>
+     <details class="panel fold"><summary><h3 style="display:inline;margin:0">미리 알아둘 개념</h3> <span class="notes">${t.concepts.length}개 · ${t.concepts.map(g=>esc(G[g][0].split(" ·")[0].split("(")[0])).join(", ")}</span></summary><div class="concepts" style="margin-top:10px">${concepts}</div><p class="notes" style="margin:8px 0 0">전체 용어는 <a href="#glossary">개념 사전</a> 탭</p></details>
+     <details class="panel fold"><summary><h3 style="display:inline;margin:0">심화 · 기술 심사위원이 볼 지점</h3> <span class="notes">${(DEEP[k]||[]).length}개 · ${(DEEP[k]||[]).map(d=>esc(d[0])).join(", ")}</span></summary>
+      <div class="concepts" style="margin-top:10px">${(DEEP[k]||[]).map(d=>`<div class="concept deep"><b>${esc(d[0])}</b><p>${esc(d[1])}</p><p class="here"><span class="chip warn">이 조에서</span> ${esc(d[2])}</p></div>`).join("")}</div></details>
+     <div style="display:flex;justify-content:space-between;gap:8px">${prev?`<a class="chip" href="#${prev}">← ${T[prev].team}</a>`:"<span></span>"}${next?`<a class="chip" href="#${next}">${T[next].team} →</a>`:`<a class="chip" href="#wrapup">총평 메모 →</a>`}</div>
+    </div>
+   </div></section>`;
+}
+function viewGlossary(){
+  const used=g=>ORDER.filter(k=>T[k].concepts.includes(g)).map(k=>`<a class="chip" href="#${k}">${T[k].team}</a>`).join("");
+  return `<section class="view"><div><h2>개념 사전</h2><p class="lead">발표에 나오는 용어를 쉬운 말로 정리했습니다. 칩은 그 개념이 나오는 조입니다. 더 넓은 지도는 <a href="https://wjdgks7178.github.io/ai-mindmap/" target="_blank" rel="noopener">AI 개념 지도</a>.</p></div>
+  <div class="gl">${GORDER.map(g=>`<div class="panel"><h4>${esc(G[g][0])}</h4><p>${esc(G[g][1])}</p>${used(g)?`<div class="teams">${used(g)}</div>`:""}</div>`).join("")}</div></section>`;
+}
+function viewWrapup(){
+  const items=ORDER.map(k=>{const v=getMemo(k);return v.trim()?`<div class="item"><h4><a href="#${k}">${T[k].team} ${esc(T[k].name)}</a></h4><pre>${esc(v)}</pre></div>`:""}).join("");
+  return `<section class="view"><div><h2>총평 메모</h2><p class="lead">16:15 총평용. 아래에 조별 메모가 모입니다.</p></div>
+  <div class="panel"><h3>총평 때 짚을 거리</h3><ul class="plain">
+   <li>본선(사회보장) PT는 <b>5분</b>. 오늘 발표에서 문제 → 데모 → 수치 3단만 남기는 연습</li>
+   <li>수치는 '몇 건으로, 무엇을 성공으로' 잰 것인지 함께 말하기 (1조·7조가 좋은 예)</li>
+   <li>'AI가 하지 않는 일'을 정한 팀(6조·4조·8조)은 그 이유를 설계 판단으로 설명하기</li>
+   <li>포스터 서비스명·숫자 출처 정합성 (5조)</li></ul></div>
+  <div class="panel"><h3>체크리스트 현황 · 피드백 거리</h3><div class="tw"><table class="sumtbl"><thead><tr><th>조</th><th>말함</th><th>질문</th><th>질문했거나 아직 안 나온 기준</th></tr></thead><tbody>${ORDER.map(k=>{const c=chkCount(k);const v=getChk(k);const miss=chkItems(k).filter(i=>v[i.id]!=="ok");const crits=[...new Set(miss.map(i=>i.crit))];return `<tr><td><a href="#${k}">${T[k].team}</a></td><td class="num">${c.ok}/${c.n}</td><td class="num">${c.ask}</td><td>${crits.map(x=>`<span class="chip ${miss.some(i=>i.crit===x&&v[i.id]==="ask")?"warn":""}">${esc(x)}</span>`).join(" ")||'<span class="chip good">모두 말함</span>'}</td></tr>`}).join("")}</tbody></table></div><p class="notes" style="margin:8px 0 0">주황 칩은 질문까지 한 기준. 회색 칩은 아직 체크하지 않은 기준.</p></div>
+  ${memoBlock("overall","총평 메모",false)}
+  <div class="panel allmemo"><h3>조별 메모 모아보기</h3>${items||'<p class="notes">아직 조별 메모가 없습니다. 각 조 화면 아래 메모 칸에 적으면 여기에 모입니다.</p>'}</div>
+  <p class="notes">메모 저장 방식: ${memo.mode==="db"?"이 페이지의 저장소에 자동 저장되어 Claude가 나중에 읽고 피드백 정리에 쓸 수 있습니다.":"이 브라우저에만 저장됩니다."}</p></section>`;
+}
+
+/* ---------- router ---------- */
+const VIEWS=["today","contests","glossary","wrapup",...ORDER];
+function cur(){const h=(location.hash||"").slice(1);return VIEWS.includes(h)?h:"today"}
+let last=null;
+function render(){
+  const c=cur();
+  const ae=document.activeElement;const keepFocus=ae&&ae.tagName==="TEXTAREA"?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd}:null;
+  document.getElementById("tabs").innerHTML=tabsHtml(c);
+  if(keepFocus&&c===last)return; /* 입력 중에는 본문을 다시 그리지 않음 */
+  const app=document.getElementById("app");
+  app.innerHTML=c==="today"?viewToday():c==="contests"?viewContests():c==="glossary"?viewGlossary():c==="wrapup"?viewWrapup():viewTeam(c);
+  if(c!==last){window.scrollTo(0,0);const on=document.querySelector("nav.tabs a.on");if(on)on.scrollIntoView({block:"nearest",inline:"center"})}
+  last=c;
+}
+document.addEventListener("input",e=>{const ta=e.target.closest("textarea[data-k]");if(ta)setMemo(ta.dataset.k,ta.value,document.getElementById("st-"+ta.dataset.k))});
+document.addEventListener("click",e=>{
+  const cb=e.target.closest(".ckb");
+  if(cb){const row=cb.closest(".ck");const k=row.dataset.ck,id=row.dataset.id;const cur0=getChk(k)[id]||"";const s=cur0===cb.dataset.s?"":cb.dataset.s;
+    setChk(k,id,s);row.className="ck "+s;row.querySelectorAll(".ckb").forEach(x=>{const on=x.dataset.s===s;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});
+    const c=chkCount(k);const el=document.getElementById("ckc-"+k);if(el)el.textContent=`말함 ${c.ok} · 질문 ${c.ask} / ${c.n}`;return}
+  const b=e.target.closest(".quick button");
+  if(b){const ta=document.getElementById("memo-"+b.dataset.k);const pre=ta.value&&!ta.value.endsWith("\n")?"\n":"";ta.value+=pre+b.dataset.q;ta.focus();ta.selectionStart=ta.selectionEnd=ta.value.length;setMemo(b.dataset.k,ta.value,document.getElementById("st-"+b.dataset.k));return}
+  const img=e.target.closest(".poster img");
+  if(img){document.getElementById("lbimg").src=img.dataset.full;document.getElementById("lb").hidden=false;return}
+  if(e.target.closest("#lb")){document.getElementById("lb").hidden=true}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("lb").hidden=true});
+window.addEventListener("hashchange",render);
+function tick(){const d=new Date();document.getElementById("nowpill").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");if(cur()==="today"&&!(document.activeElement&&document.activeElement.tagName==="TEXTAREA"))render();else document.getElementById("tabs").innerHTML=tabsHtml(cur())}
+/* ---------- timer ---------- */
+const tm={dur:15*60,left:15*60,running:false,endAt:0,iv:null,label:"발표 15분"};
+const fmt=s=>{const neg=s<0;s=Math.abs(Math.round(s));return (neg?"+":"")+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+function tDraw(){
+  const c=document.getElementById("clk"),b=document.getElementById("tbar");
+  c.textContent=fmt(tm.left);
+  const cls=tm.left<0?"over":tm.left<=Math.min(120,tm.dur*0.2)?"warn":"";
+  c.className="clock "+cls;b.className=cls;
+  b.style.width=Math.min(100,Math.max(0,(1-tm.left/tm.dur)*100))+"%";
+  document.getElementById("tStart").textContent=tm.running?"일시정지":(tm.left===tm.dur?"시작":"계속");
+  const k=cur();document.getElementById("twho").textContent=(T[k]?T[k].team:"")+(tm.left<0?" · 시간 초과":"");
+}
+function tStep(){tm.left=(tm.endAt-Date.now())/1000;tDraw()}
+function tStart(){if(tm.running){tm.running=false;clearInterval(tm.iv);tStep();return}tm.running=true;tm.endAt=Date.now()+tm.left*1000;tm.iv=setInterval(tStep,250);tDraw()}
+function tReset(){tm.running=false;clearInterval(tm.iv);tm.left=tm.dur;tDraw()}
+document.getElementById("tStart").addEventListener("click",tStart);
+document.getElementById("tReset").addEventListener("click",tReset);
+document.querySelectorAll(".timer .preset").forEach(p=>p.addEventListener("click",()=>{
+  document.querySelectorAll(".timer .preset").forEach(x=>x.classList.toggle("on",x===p));
+  tm.dur=Number(p.dataset.min)*60;tm.label=p.textContent;tReset();
+}));
+window.addEventListener("hashchange",tDraw);
+tDraw();
+
+render();tick();setInterval(tick,60000);
+initMemo();
+</script>
+
+</body>
+</html>
