@@ -180,22 +180,19 @@ button.btn.ghost{background:transparent;color:var(--navy)}
 @media (max-width:480px){.ck{grid-template-columns:1fr}}
 .sumtbl td .chip{margin:1px}
 /* floating criteria bar */
-.critbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:8;width:max-content;max-width:min(1000px,calc(100% - 32px));background:var(--navy);color:var(--surface);border-radius:12px;box-shadow:0 6px 24px rgba(10,14,40,.28);padding:8px 14px;font-size:13px;cursor:default}
-.critbar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.cb-sum{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
-.cb-sum .ttl{font-weight:700;opacity:.85}
-.cb-sum .it b{font-family:var(--font-num);margin-left:3px;color:var(--gold)}
-.cb-sum .grp{opacity:.75;font-size:12px}
-.cb-sum .hint{opacity:.6;font-size:11px;margin-left:auto}
-.cb-detail{display:none;margin-top:8px;max-height:55vh;overflow:auto;border-top:1px solid color-mix(in srgb,var(--surface) 25%,transparent);padding-top:8px}
-.critbar:hover .cb-detail,.critbar:focus-within .cb-detail,.critbar.open .cb-detail{display:block}
-.cb-detail table{font-size:13px;color:inherit}
-.cb-detail th,.cb-detail td{border-bottom-color:color-mix(in srgb,var(--surface) 18%,transparent);color:inherit;padding:5px 8px}
-.cb-detail th{opacity:.7}
-.cb-detail td.p{font-family:var(--font-num);font-weight:700;color:var(--gold);white-space:nowrap}
-.cb-detail h5{margin:8px 0 2px;font-size:12px;opacity:.8}
-body.has-cb main{padding-bottom:110px}
-@media (max-width:600px){.cb-sum .hint{display:none}}
+.critbar{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-30%);z-index:8;width:132px;max-height:70vh;overflow:auto;background:var(--navy);color:var(--surface);border-radius:12px;box-shadow:0 6px 24px rgba(10,14,40,.25);padding:10px 12px;font-size:12px;line-height:1.4;display:grid;gap:5px}
+.critbar .ttl{font-weight:700;font-size:12px;padding-bottom:6px;border-bottom:1px solid color-mix(in srgb,var(--surface) 25%,transparent);margin-bottom:2px}
+.critbar .ttl span{font-weight:400;opacity:.75}
+.critbar .it{display:flex;justify-content:space-between;gap:6px;align-items:baseline}
+.critbar .it b{font-family:var(--font-num);color:var(--gold);font-size:14px}
+.critbar .grp{margin-top:4px;opacity:.75;font-size:11px}
+.critbar .grp b{color:var(--gold);font-family:var(--font-num)}
+/* 오른쪽 여백이 좁으면 본문을 바 폭만큼 비켜 줌 */
+body.has-cb main.wrap{padding-right:max(16px,calc(160px - (100vw - 1240px) / 2))}
+@media (max-width:760px){
+  .critbar{top:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:none;width:auto;left:max(12px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:4px 12px;max-height:30vh}
+  .critbar .ttl{border:0;padding:0;margin:0;width:100%}.critbar .ttl br{display:none}
+  body.has-cb main.wrap{padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:140px}}
 details.fold>summary{cursor:pointer;list-style:none}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary::before{content:"▸";display:inline-block;width:16px;color:var(--navy)}
@@ -223,7 +220,7 @@ details.fold[open]>summary::before{content:"▾"}
 </header>
 
 <main class="wrap" id="app"></main>
-<div class="critbar" id="critbar" tabindex="0" role="note" aria-label="심사기준 요약, 마우스를 올리면 펼쳐짐" hidden></div>
+<aside class="critbar" id="critbar" aria-label="심사기준 요약" hidden></aside>
 <div class="lightbox" id="lb" hidden><img id="lbimg" alt=""></div>
 
 <script>
@@ -746,25 +743,20 @@ const SHORT={"사회보장 데이터 활용":"데이터 활용","발전(사업�
 function critBarHtml(k){
   const t=T[k];if(!t)return "";
   const c=C[t.contest];
-  const hint=`<span class="hint">마우스를 올리면 펼쳐짐</span>`;
-  if(t.contest==="A"){
-    const sum=c.crit.map(r=>`<span class="it">${esc(SHORT[r[0]]||r[0])}<b>${r[1]}</b></span>`).join("");
-    const det=`<table><thead><tr><th>항목</th><th>배점</th><th>보는 것</th></tr></thead><tbody>${c.crit.map(r=>`<tr><td>${esc(r[0])}</td><td class="p">${r[1]}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table>`;
-    return `<div class="cb-sum"><span class="ttl">${esc(c.short)} 100점</span>${sum}${hint}</div><div class="cb-detail">${det}</div>`;
-  }
-  if(t.contest==="B"){
-    const nm=rows=>rows.map(r=>`<span class="it">${esc(r[0])}</span>`).join("");
-    const tb=(title,rows)=>`<h5>${esc(title)}</h5><table><tbody>${rows.map(r=>`<tr><td style="white-space:nowrap">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table>`;
-    return `<div class="cb-sum"><span class="ttl">${esc(c.short)}</span><span class="it">정량<b>50%</b></span><span class="grp">${c.quant.map(r=>esc(r[0])).join("·")}</span><span class="it">정성<b>50%</b></span><span class="grp">응답 ${c.qualR.map(r=>esc(r[0])).join("·")} / 설계서 ${c.qualD.map(r=>esc(r[0])).join("·")}</span>${hint}</div>
-     <div class="cb-detail">${tb("정량 50% · LLM Judge가 응답 채점",c.quant)}${tb("정성 50% · 모델 응답 결과",c.qualR)}${tb("정성 · 프롬프트 설계서",c.qualD)}<p style="margin:6px 0 0;opacity:.7;font-size:12px">항목별 배점은 공개되지 않음. 가점: 질문셋 오류 지적 인정 시 건당 1점</p></div>`;
-  }
+  const row=(n,p)=>`<div class="it"><span>${esc(n)}</span>${p?`<b>${esc(p)}</b>`:""}</div>`;
+  if(t.contest==="A")
+    return `<div class="ttl">${esc(c.short)}<br><span>100점</span></div>${c.crit.map(r=>row(SHORT[r[0]]||r[0],String(r[1]))).join("")}`;
+  if(t.contest==="B")
+    return `<div class="ttl">${esc(c.short)}<br><span>배점 비공개</span></div>
+     <div class="grp">정량 <b>50%</b></div>${c.quant.map(r=>row(r[0])).join("")}
+     <div class="grp">정성 <b>50%</b> · 응답</div>${c.qualR.map(r=>row(r[0])).join("")}
+     <div class="grp">정성 · 설계서</div>${c.qualD.map(r=>row(r[0])).join("")}`;
   return "";
 }
 function updateCritBar(){
   const el=document.getElementById("critbar");const h=critBarHtml(cur());
-  el.innerHTML=h;el.hidden=!h;el.classList.remove("open");document.body.classList.toggle("has-cb",!!h);
+  el.innerHTML=h;el.hidden=!h;document.body.classList.toggle("has-cb",!!h);
 }
-document.getElementById("critbar").addEventListener("click",e=>{if(!e.target.closest(".cb-detail"))e.currentTarget.classList.toggle("open")});
 
 /* ---------- router ---------- */
 const VIEWS=["today","contests","glossary","wrapup",...ORDER];
